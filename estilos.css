@@ -1,0 +1,111 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Impact, Arial, sans-serif;
+    background: linear-gradient(135deg, #1b0036, #4b0082, #9b0056);
+    color: white;
+    padding: 20px;
+}
+
+/* HEADER / BIENVENIDA */
+header {
+    border: 4px solid #ffd700;
+    background: rgba(0, 0, 0, 0.65);
+    text-align: center;
+    padding: 35px;
+    box-shadow: 0 0 20px #ff00ff;
+}
+
+header h2 {
+    font-size: 36px;
+    color: #ff4ecd;
+    text-shadow: 3px 3px 0 #000;
+    margin-bottom: 15px;
+}
+
+header img {
+    max-width: 40%;
+    height: auto;
+    border: 3px solid #00ffff;
+    box-shadow: 0 0 20px #00ffff;
+    margin-bottom: 15px;
+}
+
+header p {
+    font-size: 22px;
+    color: white;
+    text-shadow: 2px 2px 0 #000;
+}
+
+/* NAV */
+nav {
+    margin-top: 10px;
+    min-height: 60px;
+    border: 3px solid #00ffff;
+    background-color: #16002b;
+    box-shadow: 0 0 15px #00ffff;
+}
+
+/* MAIN */
+main {
+    margin-top: 15px;
+    display: flex;
+    gap: 10px;
+    min-height: 450px;
+}
+
+/* LATERALES */
+.imagen1,
+.imagen2 {
+    width: 15%;
+    border: 4px solid #00ffff;
+    background: linear-gradient(180deg, #26004d, #8300c4);
+    box-shadow: 0 0 15px #00ffff;
+    display: flex;
+}
+
+/* Imagen izquierda pegada abajo */
+.imagen1 {
+    justify-content: center;
+    align-items: flex-end;
+}
+
+/* Imagen derecha centrada */
+.imagen2 {
+    justify-content: center;
+    align-items: center;
+}
+
+.stand-portada {
+    max-width: 95%;
+    max-height: 95%;
+    object-fit: contain;
+}
+
+/* CONTENIDO PRINCIPAL */
+.principal {
+    width: 70%;
+    border: 4px solid #ffd700;
+    background: rgba(0, 0, 0, 0.7);
+    box-shadow: inset 0 0 25px #ff00ff;
+}
+
+/* FOOTER */
+footer {
+    margin-top: 15px;
+    border: 4px solid #ffd700;
+    background: #16002b;
+    text-align: center;
+    padding: 20px;
+    box-shadow: 0 0 15px #ff00ff;
+}
+
+footer p {
+    font-size: 24px;
+    color: #ffd700;
+    text-shadow: 2px 2px 0 #000;
+}
