@@ -77,3 +77,28 @@ server.get("/portador", (req, res) => {
   });
 });
 
+server.post("/stand", (req, res) => {
+  const { id_evolucion, nombre, descripcion, aparicion, imagen_manga, imagen_anime, poder, velocidad, alcance, durabilidad, precis, potencial } = req.body;
+
+  const sql = `
+    INSERT INTO stand (id_evolucion, nombre, descripcion, aparicion, imagen_manga, imagen_anime, poder, velocidad, alcance, durabilidad, precis, potencial)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `;
+
+  pool_mysql.query(
+    sql,
+    [id_evolucion, nombre, descripcion, aparicion, imagen_manga, imagen_anime, poder, velocidad, alcance, durabilidad, precis, potencial],
+    (error, resultado) => {
+      if (error) {
+        console.error("Error en INSERT:", error);
+        return res.status(500).json({ error });
+      }
+
+      res.json({
+        mensaje: "Stand insertado correctamente",
+        datos: { id_evolucion, nombre, descripcion, aparicion, imagen_manga, imagen_anime, poder, velocidad, alcance, durabilidad, precis, potencial }
+      });
+    }
+  );
+});
+
