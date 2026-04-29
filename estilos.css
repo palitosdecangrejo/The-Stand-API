@@ -68,13 +68,11 @@ main {
     display: flex;
 }
 
-/* Imagen izquierda pegada abajo */
 .imagen1 {
     justify-content: center;
     align-items: flex-end;
 }
 
-/* Imagen derecha centrada */
 .imagen2 {
     justify-content: center;
     align-items: center;
@@ -96,37 +94,26 @@ main {
     border: 4px solid #ffd700;
     background: rgba(0, 0, 0, 0.7);
     box-shadow: inset 0 0 25px #ff00ff;
-}
 
-/* FOOTER */
-footer {
-    margin-top: 15px;
-    border: 4px solid #ffd700;
-    background: #16002b;
-    text-align: center;
-    padding: 20px;
-    box-shadow: 0 0 15px #ff00ff;
-}
-
-footer p {
-    font-size: 24px;
-    color: #ffd700;
-    text-shadow: 2px 2px 0 #000;
-}
-
-.contenedor-stands {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(150px, 180px));
     gap: 20px;
-    padding: 20px;
+
+    padding: 25px;
+    align-items: start;
+    align-content: start;
+    justify-content: start;
 }
 
+/* CARDS */
 .card-stand {
     background-color: #111;
     border: 2px solid #6a00ff;
     border-radius: 10px;
     text-align: center;
     padding: 10px;
+    height: auto;
+    min-height: 220px;
     transition: transform 0.3s, box-shadow 0.3s;
 }
 
@@ -147,11 +134,30 @@ footer p {
     box-shadow: 0 0 15px #6a00ff;
 }
 
+/* FOOTER */
+footer {
+    margin-top: 15px;
+    border: 4px solid #ffd700;
+    background: #16002b;
+    text-align: center;
+    padding: 20px;
+    box-shadow: 0 0 15px #ff00ff;
+}
+
+footer p {
+    font-size: 24px;
+    color: #ffd700;
+    text-shadow: 2px 2px 0 #000;
+}
+
 @keyframes flotar {
     0% {
-        transform: translateY(0);
+        transform: translateY(-10px);
+    }
+    50% {
+        transform: translateY(10px);
     }
     100% {
-        transform: translateY(20px);
+        transform: translateY(-10px);
     }
 }
