@@ -80,6 +80,10 @@ main {
     align-items: center;
 }
 
+.imagen2 img {
+    animation: flotar 2s infinite alternate ease-in-out;
+}
+
 .stand-portada {
     max-width: 95%;
     max-height: 95%;
@@ -108,4 +112,13 @@ footer p {
     font-size: 24px;
     color: #ffd700;
     text-shadow: 2px 2px 0 #000;
+}
+
+@keyframes flotar {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(20px);
+    }
 }
