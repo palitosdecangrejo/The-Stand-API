@@ -37,7 +37,8 @@ function cargarStands() {
 
                 // click para ir a la página de detalles
                 card.addEventListener('click', () => {
-                    window.location.href = `stand.html?id=${stand.id}`;
+                    const isRoot = !window.location.pathname.includes('/pages/');
+                    window.location.href = isRoot ? `pages/stand.html?id=${stand.id}` : `stand.html?id=${stand.id}`;
                 });
 
                 // añadir la carta al contenedor principal
