@@ -93,27 +93,27 @@ INSERT INTO `stand` (`id`, `id_evolucion`, `nombre`, `descripcion`, `aparicion`,
 (2, NULL, 'Magician s Red', 'Stand de fuego con gran control de llamas y ataques a distancia.', 'Parte 3', 'https://static.jojowiki.com/images/5/56/latest/20210529144745/Magician%27s_Red_Infobox_Manga.png', NULL, 'B', 'B', 'C', 'B', 'C', 'D'),
 (3, NULL, 'Hermit Purple', 'Stand de enredaderas que permite rastrear y obtener información.', 'Parte 3 y Parte 4', 'https://static.jojowiki.com/images/c/c1/latest/20260226030336/Hermit_Purple_SC_Infobox_Manga.png', NULL, 'D', 'C', 'D', 'A', 'D', 'E'),
 (4, NULL, 'Hierophant Green', 'Stand versátil que ataca a distancia y puede infiltrarse en objetos.', 'Parte 3', 'https://static.jojowiki.com/images/8/8e/latest/20260314161255/Hierophant_Green_Infobox_Manga.png', NULL, 'C', 'B', 'A', 'B', 'C', 'D'),
-(5, NULL, 'Silver Chariot', 'Espadachín extremadamente rápido', 'Parte 3', 'https://static.jojowiki.com/images/9/9b/latest/20220502142632/Silver_Chariot_SC_Infobox_Manga.png', NULL, 'B', 'A', 'C', 'C', 'B', 'C'),
-(6, NULL, 'The World', 'Detiene el tiempo', 'Parte 3', 'https://static.jojowiki.com/images/f/f5/latest/20210424162912/The_World_Infobox_Manga.png', NULL, 'A', 'A', 'C', 'A', 'A', 'B'),
-(7, NULL, 'Crazy Diamond', 'Restaura objetos y personas', 'Parte 4', 'https://static.jojowiki.com/images/c/c5/latest/20200625184236/Crazy_Diamond_Infobox_Manga.png', NULL, 'A', 'A', 'C', 'A', 'B', 'C'),
-(8, 9, 'Echoes Act 1', 'Manipula sonido', 'Parte 4', 'https://static.jojowiki.com/images/d/db/latest/20230330014026/Echoes_ACT1_DU_Infobox_Manga.png', NULL, 'E', 'C', 'B', 'C', 'C', 'A'),
-(9, 10, 'Echoes Act 2', 'Sonidos con efectos físicos', 'Parte 4', 'https://static.jojowiki.com/images/1/11/latest/20220313112608/Echoes_ACT2_DU_Infobox_Manga.png', NULL, 'C', 'C', 'B', 'C', 'C', 'A'),
-(10, NULL, 'Echoes Act 3', 'Aumenta peso gravitacional', 'Parte 4', 'https://static.jojowiki.com/images/c/cd/latest/20220313115644/Echoes_ACT1_VA_Infobox_Manga.png', NULL, 'B', 'C', 'C', 'B', 'C', 'C'),
-(11, NULL, 'The Hand', 'Borra espacio', 'Parte 4', 'https://static.jojowiki.com/images/2/20/latest/20260218065303/The_Hand_Infobox_Manga.png', NULL, 'A', 'B', 'D', 'A', 'C', 'C'),
-(12, NULL, 'Heavens Door', 'Controla acciones humanas', 'Parte 4', 'https://static.jojowiki.com/images/d/de/latest/20191228045732/Heaven%27s_Door_Infobox_Manga.png', NULL, 'C', 'B', 'B', 'B', 'A', 'B'),
-(13, NULL, 'Gold Experience', 'Crea vida', 'Parte 5', NULL, NULL, 'C', 'A', 'C', 'D', 'C', 'A');
-(13, NULL, 'Gold Experience', 'Crea vida', 'Parte 5', NULL, NULL, 'C', 'A', 'C', 'D', 'C', 'A'),
-(14, NULL, 'Sticky Fingers', 'Cremalleras dimensionales', 'Parte 5', NULL, NULL, 'A', 'A', 'C', 'A', 'C', 'D'),
-(15, NULL, 'Sex Pistols', 'Balas con voluntad', 'Parte 5', NULL, NULL, 'B', 'B', 'B', 'A', 'A', 'C'),
-(16, NULL, 'Aerosmith', 'Avión con ametralladoras', 'Parte 5', NULL, NULL, 'B', 'B', 'C', 'C', 'C', 'C'),
-(17, NULL, 'Moody Blues', 'Reproduce el pasado', 'Parte 5', NULL, NULL, 'C', 'C', 'A', 'A', 'B', 'C'),
-(18, NULL, 'King Crimson', 'Borra tiempo', 'Parte 5', NULL, NULL, 'A', 'A', 'C', 'A', 'A', 'E'),
-(19, NULL, 'Stone Free', 'Cuerpo de hilo', 'Parte 6', NULL, NULL, 'A', 'B', 'C', 'A', 'C', 'A'),
-(20, NULL, 'Kiss', 'Duplica objetos', 'Parte 6', NULL, NULL, 'A', 'A', 'C', 'A', 'C', 'A'),
-(21, NULL, 'Weather Report', 'Control del clima', 'Parte 6', NULL, NULL, 'A', 'B', 'C', 'A', 'C', 'A'),
-(22, 23, 'Whitesnake', 'Roba memoria y Stand', 'Parte 6', NULL, NULL, 'C', 'B', 'C', 'A', 'B', 'A'),
-(23, 24, 'C-Moon', 'Controla gravedad', 'Parte 6', NULL, NULL, 'A', 'B', 'C', 'A', 'C', 'A'),
-(24, NULL, 'Made in Heaven', 'Acelera el tiempo', 'Parte 6', NULL, NULL, 'A', 'A', 'A', 'A', 'C', 'A');
+(5, NULL, 'Silver Chariot', 'Stand de combate especializado en esgrima, extremadamente rápido y preciso en ataques cuerpo a cuerpo.', 'Parte 3', 'https://static.jojowiki.com/images/9/9b/latest/20220502142632/Silver_Chariot_SC_Infobox_Manga.png', NULL, 'B', 'A', 'C', 'C', 'B', 'C'),
+(6, NULL, 'The World', 'Stand de gran poder físico capaz de detener el tiempo durante unos segundos y atacar sin oposición.', 'Parte 3', 'https://static.jojowiki.com/images/f/f5/latest/20210424162912/The_World_Infobox_Manga.png', NULL, 'A', 'A', 'C', 'A', 'A', 'B'),
+(7, NULL, 'Crazy Diamond', 'Stand con gran fuerza que puede reparar objetos y seres vivos devolviéndolos a su estado original.', 'Parte 4', 'https://static.jojowiki.com/images/c/c5/latest/20200625184236/Crazy_Diamond_Infobox_Manga.png', NULL, 'A', 'A', 'C', 'A', 'B', 'C'),
+(8, 9, 'Echoes Act 1', 'Stand que materializa sonidos escritos, permitiendo manipular el entorno mediante efectos sonoros.', 'Parte 4', 'https://static.jojowiki.com/images/d/db/latest/20230330014026/Echoes_ACT1_DU_Infobox_Manga.png', NULL, 'E', 'C', 'B', 'C', 'C', 'A'),
+(9, 10, 'Echoes Act 2', 'Evolución de Echoes que convierte palabras en efectos físicos capaces de afectar directamente a los objetivos.', 'Parte 4', 'https://static.jojowiki.com/images/1/11/latest/20220313112608/Echoes_ACT2_DU_Infobox_Manga.png', NULL, 'C', 'C', 'B', 'C', 'C', 'A'),
+(10, NULL, 'Echoes Act 3', 'Forma final de Echoes que puede aumentar el peso de los objetos y enemigos mediante su habilidad gravitacional.', 'Parte 4', 'https://static.jojowiki.com/images/c/cd/latest/20220313115644/Echoes_ACT1_VA_Infobox_Manga.png', NULL, 'B', 'C', 'C', 'B', 'C', 'C'),
+(11, NULL, 'The Hand', 'Stand con la capacidad de borrar el espacio que toca, eliminando todo lo que se encuentre en su trayectoria.', 'Parte 4', 'https://static.jojowiki.com/images/2/20/latest/20260218065303/The_Hand_Infobox_Manga.png', NULL, 'A', 'B', 'D', 'A', 'C', 'C'),
+(12, NULL, 'Heavens Door', 'Stand que transforma a las personas en libros, permitiendo leer y alterar sus recuerdos y acciones.', 'Parte 4', 'https://static.jojowiki.com/images/d/de/latest/20191228045732/Heaven%27s_Door_Infobox_Manga.png', NULL, 'C', 'B', 'B', 'B', 'A', 'B'),
+(13, 25, 'Gold Experience', 'Stand de corto alcance capaz de crear vida a partir de objetos inertes y usarla de forma estratégica.', 'Parte 5', 'https://jojowiki.com/Special:Redirect/file/Gold_Experience_Infobox_Manga.png', NULL, 'C', 'A', 'C', 'D', 'C', 'A'),
+(25, NULL, 'Gold Experience Requiem', 'Evolución de Gold Experience con el poder de anular acciones y devolver todo a cero.', 'Parte 5', 'https://jojowiki.com/Special:Redirect/file/Gold_Experience_Requiem_Infobox_Manga.png', NULL, 'A', 'A', 'A', 'A', 'A', 'A'),
+(14, NULL, 'Sticky Fingers', 'Stand veloz que crea cremalleras en cualquier superficie para abrir, separar o atravesar objetos.', 'Parte 5', 'https://jojowiki.com/Special:Redirect/file/Sticky_Fingers_Infobox_Manga.png', NULL, 'A', 'A', 'C', 'A', 'C', 'D'),
+(15, NULL, 'Sex Pistols', 'Stand dividido en pequeñas entidades que manipulan la trayectoria de las balas disparadas.', 'Parte 5', 'https://jojowiki.com/Special:Redirect/file/Sex_Pistols_Infobox_Manga.png', NULL, 'B', 'B', 'B', 'A', 'A', 'C'),
+(16, NULL, 'Aerosmith', 'Stand con forma de avión capaz de disparar, lanzar bombas y rastrear enemigos por dióxido de carbono.', 'Parte 5', 'https://jojowiki.com/Special:Redirect/file/Aerosmith_Infobox_Manga.jpg', NULL, 'B', 'B', 'C', 'C', 'C', 'C'),
+(17, NULL, 'Moody Blues', 'Stand que reproduce acciones pasadas de una persona en un lugar concreto como si fuera una grabación.', 'Parte 5', 'https://jojowiki.com/Special:Redirect/file/Moody_Blues_Infobox_Manga.png', NULL, 'C', 'C', 'A', 'A', 'B', 'C'),
+(18, NULL, 'King Crimson', 'Stand extremadamente poderoso que puede borrar intervalos de tiempo y anticipar movimientos enemigos.', 'Parte 5', 'https://jojowiki.com/Special:Redirect/file/King_Crimson_Infobox_Manga.png', NULL, 'A', 'A', 'C', 'A', 'A', 'E'),
+(19, NULL, 'Stone Free', 'Stand que permite transformar el cuerpo de su usuaria en hilos para atacar, defenderse o moverse.', 'Parte 6', 'https://jojowiki.com/Special:Redirect/file/Stone_Free_Infobox_Manga.png', NULL, 'A', 'B', 'C', 'A', 'C', 'A'),
+(20, NULL, 'Kiss', 'Stand que coloca pegatinas capaces de duplicar objetos y dañarlos al volver a unirse.', 'Parte 6', 'https://jojowiki.com/Special:Redirect/file/Kiss_Infobox_Manga.png', NULL, 'A', 'A', 'C', 'A', 'C', 'A'),
+(21, NULL, 'Weather Report', 'Stand muy versátil capaz de controlar el clima y manipular fenómenos atmosféricos a gran escala.', 'Parte 6', 'https://jojowiki.com/Special:Redirect/file/Weather_Report_Infobox_Manga.png', NULL, 'A', 'B', 'C', 'A', 'C', 'A'),
+(22, 23, 'Whitesnake', 'Stand que extrae recuerdos y Stands en forma de discos, permitiendo robar o manipular habilidades.', 'Parte 6', 'https://jojowiki.com/Special:Redirect/file/Whitesnake_Infobox_Manga.png', NULL, 'C', 'B', 'C', 'A', 'B', 'A'),
+(23, 24, 'C-Moon', 'Stand evolucionado que altera la gravedad alrededor de su usuario y puede invertir cuerpos y superficies.', 'Parte 6', 'https://jojowiki.com/Special:Redirect/file/C-MOON_Infobox_Manga.png', NULL, 'A', 'B', 'C', 'A', 'C', 'A'),
+(24, NULL, 'Made in Heaven', 'Forma final de la evolución de Pucci, capaz de acelerar el tiempo hasta reiniciar el universo.', 'Parte 6', 'https://jojowiki.com/Special:Redirect/file/Made_in_Heaven_Infobox_Manga.png', NULL, 'A', 'A', 'A', 'A', 'C', 'A');
 
 -- --------------------------------------------------------
 
@@ -154,7 +154,8 @@ INSERT INTO `stand_portador` (`id_stand`, `id_portador`) VALUES
 (21, 19),
 (22, 20),
 (23, 20),
-(24, 20);
+(24, 20),
+(25, 11);
 
 --
 -- Índices para tablas volcadas
