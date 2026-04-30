@@ -2,47 +2,43 @@ const ENDPOINT_STANDS = "http://localhost:3000/stand";
 
 const ENDPOINT_USUARIOS = "http://localhost:3000/portador";
 
-const card1 = document.getElementById("card-stand-1");
-const card2 = document.getElementById("card-stand-2");
-const card3 = document.getElementById("card-stand-3");
-const card4 = document.getElementById("card-stand-4");
-const card5 = document.getElementById("card-stand-5");
-const card6 = document.getElementById("card-stand-6");
-const card7 = document.getElementById("card-stand-7");
-const card8 = document.getElementById("card-stand-8");
-const card9 = document.getElementById("card-stand-9");
-const card10 = document.getElementById("card-stand-10");
-const card11 = document.getElementById("card-stand-11");
-const card12 = document.getElementById("card-stand-12");
-
-function cargarStand(card, id) {
+function cargarStands() {
     fetch(ENDPOINT_STANDS)
         .then(res => res.json())
         .then(datos => {
-            const stand = datos.find(s => s.id === id);
+            const principal = document.getElementById("principal-container");
 
-            const img = card.querySelector("img");
-            const titulo = card.querySelector("h3");
+            // limpiar contenedor por si acaso de antes tiene algo
+            if (principal) {
+                principal.innerHTML = '';
+            } else {
+                console.error("No se encontró el contenedor principal");
+                return;
+            }
 
-            img.src = stand.imagen_manga;
-            img.alt = stand.nombre;
-            titulo.textContent = stand.nombre;
-        });
-}
+            datos.forEach(stand => {
+                // crear div carta con id para identificarlo
+                const card = document.createElement("div");
+                card.className = "card-stand";
+                card.id = `card-stand-${stand.id}`;
 
-function cargarStands() {
-    cargarStand(card1, 1);
-    cargarStand(card2, 2);
-    cargarStand(card3, 3);
-    cargarStand(card4, 4);
-    cargarStand(card5, 5);
-    cargarStand(card6, 6);
-    cargarStand(card7, 7);
-    cargarStand(card8, 8);
-    cargarStand(card9, 9);
-    cargarStand(card10, 10);
-    cargarStand(card11, 11);
-    cargarStand(card12, 12);
+                // crear imagen con la url de la manga
+                const img = document.createElement("img");
+                img.src = stand.imagen_manga || "";
+                img.alt = stand.nombre || "Imagen no disponible";
+
+                const titulo = document.createElement("h3");
+                titulo.textContent = stand.nombre;
+
+                // añadir imagen y título a la carta
+                card.appendChild(img);
+                card.appendChild(titulo);
+
+                // añadir la carta al contenedor principal
+                principal.appendChild(card);
+            });
+        })
+        .catch(error => console.error("Error al cargar los stands:", error));
 }
 
 cargarStands();
