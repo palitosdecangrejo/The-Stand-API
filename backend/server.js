@@ -102,4 +102,25 @@ server.post("/stand", (req, res) => {
   );
 });
 
+server.get("/buscar/stand", (req, res) => {
+  const texto = req.query.q;
+
+  if (!texto) {
+    return res.status(400).json({ error: "Falta el texto de búsqueda" });
+  }
+
+  const sql = `
+    SELECT *
+    FROM stand
+    WHERE nombre LIKE ?`;
+
+  pool_mysql.query(sql, [`%${texto}%`], (error, resultados) => {
+    if (error) {
+      console.error("Error en la búsqueda: ", error);
+      return res.status(500).json({ error });
+    }
+    res.json(resultados);
+  });
+});
+
 // TEST

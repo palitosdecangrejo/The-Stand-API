@@ -2,6 +2,8 @@ const ENDPOINT_STANDS = "http://localhost:3000/stand";
 
 const ENDPOINT_USUARIOS = "http://localhost:3000/portador";
 
+const ENDPOINT_BUSQUEDA = "http://localhost:3000/buscar/stand?q=";
+
 function cargarStands() {
     fetch(ENDPOINT_STANDS)
         .then(res => res.json())
@@ -17,32 +19,35 @@ function cargarStands() {
             }
 
             datos.forEach(stand => {
-                // crear div carta con id para identificarlo
-                const card = document.createElement("div");
-                card.className = "card-stand";
-                card.id = `card-stand-${stand.id}`;
-                card.style.cursor = 'pointer';
 
-                // crear imagen con la url de la manga
-                const img = document.createElement("img");
-                img.src = stand.imagen_manga || "";
-                img.alt = stand.nombre || "Imagen no disponible";
+                if (stand.id >= 1 && stand.id <= 15) {
+                    // crear div carta con id para identificarlo
+                    const card = document.createElement("div");
+                    card.className = "card-stand";
+                    card.id = `card-stand-${stand.id}`;
+                    card.style.cursor = 'pointer';
 
-                const titulo = document.createElement("h3");
-                titulo.textContent = stand.nombre;
+                    // crear imagen con la url de la manga
+                    const img = document.createElement("img");
+                    img.src = stand.imagen_manga || "";
+                    img.alt = stand.nombre || "Imagen no disponible";
 
-                // añadir imagen y título a la carta
-                card.appendChild(img);
-                card.appendChild(titulo);
+                    const titulo = document.createElement("h3");
+                    titulo.textContent = stand.nombre;
 
-                // click para ir a la página de detalles
-                card.addEventListener('click', () => {
-                    const isRoot = !window.location.pathname.includes('/pages/');
-                    window.location.href = isRoot ? `pages/stand.html?id=${stand.id}` : `stand.html?id=${stand.id}`;
-                });
+                    // añadir imagen y título a la carta
+                    card.appendChild(img);
+                    card.appendChild(titulo);
 
-                // añadir la carta al contenedor principal
-                principal.appendChild(card);
+                    // click para ir a la página de detalles
+                    card.addEventListener('click', () => {
+                        const isRoot = !window.location.pathname.includes('/pages/');
+                        window.location.href = isRoot ? `pages/stand.html?id=${stand.id}` : `stand.html?id=${stand.id}`;
+                    });
+
+                    // añadir la carta al contenedor principal
+                    principal.appendChild(card);
+                }
             });
         })
         .catch(error => console.error("Error al cargar los stands:", error));
@@ -74,6 +79,11 @@ function cargarDetallesStand(id) {
             const img = document.createElement("img");
             img.src = stand.imagen_manga || "";
             img.alt = stand.nombre || "Imagen no disponible";
+
+            /**
+            const portador = document.createElement("p");
+            portador.textContent = stand.portador;
+            */
 
             imgWrapper.appendChild(img);
 
@@ -141,4 +151,102 @@ if (standId) {
     if (principal) {
         cargarStands();
     }
+}
+
+const inputBusqueda = document.getElementById("input-busqueda");
+const resultadosBusqueda = document.getElementById("resultados-busqueda");
+
+function activarBarraBusqueda() {
+
+    if (inputBusqueda) {
+        inputBusqueda.addEventListener("input", function () {
+            let texto = inputBusqueda.value.trim();
+
+            if (texto.length > 0) {
+                buscarContenido(texto);
+            } else {
+                resultadosBusqueda.innerHTML = "";
+                resultadosBusqueda.style.display = "none";
+            }
+        });
+    }
+
+    document.addEventListener("click", function (evento) {
+        let cajaBusqueda = document.querySelector(".cuadro-busqueda");
+
+        if (cajaBusqueda && !cajaBusqueda.contains(evento.target)) {
+            if (resultadosBusqueda) {
+                resultadosBusqueda.style.display = "none";
+            }
+        }
+    });
+}
+
+function buscarContenido(texto) {
+
+    fetch("http://localhost:3000/buscar/stand?q=" + encodeURIComponent(texto))
+        .then(function (respuesta) {
+            return respuesta.json();
+        })
+        .then(function (datos) {
+            mostrarResultadosBusqueda(datos);
+        })
+        .catch(function (error) {
+            console.log("Error en la búsqueda:", error);
+        });
+}
+
+function mostrarResultadosBusqueda(resultados) {
+
+    resultadosBusqueda.innerHTML = "";
+
+    let resultadosValidos = resultados.slice(0, 5);
+
+    resultadosBusqueda.style.display = resultadosValidos.length ? "block" : "none";
+
+    resultadosValidos.forEach(function (stand) {
+        let div = document.createElement("div");
+        div.classList.add("resultado-item");
+
+        div.textContent = stand.nombre;
+
+        div.addEventListener("click", function () {
+            const isRoot = !window.location.pathname.includes("/pages/");
+            window.location.href = isRoot
+                ? "pages/stand.html?id=" + stand.id
+                : "stand.html?id=" + stand.id;
+        });
+
+        resultadosBusqueda.appendChild(div);
+    });
+}
+
+activarBarraBusqueda();
+
+const btnRandom = document.getElementById("btn-random");
+
+if (btnRandom) {
+    btnRandom.addEventListener("click", function () {
+
+        fetch(ENDPOINT_STANDS)
+
+            .then(res => res.json())
+
+            .then(datos => {
+
+                let indice = Math.floor(Math.random() * datos.length);
+
+                let standRandom = datos[indice];
+
+                const isRoot = !window.location.pathname.includes("/pages/");
+
+                window.location.href = isRoot
+                    ? "pages/stand.html?id=" + standRandom.id
+                    : "stand.html?id=" + standRandom.id;
+            })
+
+            .catch(error => {
+                console.log("Error al cargar stand random:", error);
+            });
+    });
 }
