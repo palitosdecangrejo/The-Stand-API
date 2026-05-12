@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Alonso Martín González & Héctor Guzmán Amor">
+    <link rel="icon" href="../images/arrow.png">
+    <title>Insertar Stand - The Stand API</title>
+    <link rel="stylesheet" href="../estilos.css">
+</head>
+
+<body>
+    <header>
+        <a href="../index.html" class="header-logo-link">
+            <h2>Bienvenido a</h2>
+            <img src="../images/banner.png" alt="Banner">
+        </a>
+        <p>Aquí podrás encontrar información sobre los stands de JoJo's Bizarre Adventure</p>
+    </header>
+    <nav class="nav-global">
+        <ul>
+            <li><a href="../index.html">Inicio</a></li>
+            <li><a href="busqueda.html">Búsqueda</a></li>
+            <li><a href="random.html">Random</a></li>
+            <li><a href="insertar.html">Insertar Stand</a></li>
+            <li><a href="aboutus.html">About Us</a></li>
+        </ul>
+    </nav>
+    <main>
+        <div class="principal">
+            <h2 class="page-title">Insertar Nuevo Stand</h2>
+            
+            <div class="form-container">
+                <form id="form-insertar-stand">
+                    <div class="form-group">
+                        <label for="nombre">Nombre</label>
+                        <input type="text" id="nombre" name="nombre" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="descripcion">Descripción</label>
+                        <textarea id="descripcion" name="descripcion" rows="4"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_evolucion">ID Evolución (Opcional, numérico)</label>
+                        <input type="number" id="id_evolucion" name="id_evolucion">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="aparicion">Aparición</label>
+                        <input type="text" id="aparicion" name="aparicion">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="imagen_manga">Imagen Manga (URL)</label>
+                        <input type="text" id="imagen_manga" name="imagen_manga">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="imagen_anime">Imagen Anime (URL)</label>
+                        <input type="text" id="imagen_anime" name="imagen_anime">
+                    </div>
+
+                    <h3 style="color: #ffd700; margin-bottom: 10px; margin-top: 20px;">Estadísticas (Ej: A, B, C, None)</h3>
+                    <div class="stats-grid-form">
+                        <div class="form-group">
+                            <label for="poder">Poder</label>
+                            <input type="text" id="poder" name="poder" maxlength="4">
+                        </div>
+                        <div class="form-group">
+                            <label for="velocidad">Velocidad</label>
+                            <input type="text" id="velocidad" name="velocidad" maxlength="4">
+                        </div>
+                        <div class="form-group">
+                            <label for="alcance">Alcance</label>
+                            <input type="text" id="alcance" name="alcance" maxlength="4">
+                        </div>
+                        <div class="form-group">
+                            <label for="durabilidad">Durabilidad</label>
+                            <input type="text" id="durabilidad" name="durabilidad" maxlength="4">
+                        </div>
+                        <div class="form-group">
+                            <label for="precis">Precisión</label>
+                            <input type="text" id="precis" name="precis" maxlength="4">
+                        </div>
+                        <div class="form-group">
+                            <label for="potencial">Potencial</label>
+                            <input type="text" id="potencial" name="potencial" maxlength="4">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-submit">Añadir Stand</button>
+                    <div id="mensaje-resultado"></div>
+                </form>
+            </div>
+            
+        </div>
+    </main>
+    <footer>
+        <p>The Stand API</p>
+    </footer>
+    <script src="../js/javascript.js"></script>
+</body>
+
+</html>

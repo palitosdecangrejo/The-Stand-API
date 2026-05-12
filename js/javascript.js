@@ -87,6 +87,42 @@ function cargarDetallesStand(id) {
 
             imgWrapper.appendChild(img);
 
+            // Crear botón de borrar
+            let btnBorrar = document.createElement("button");
+            btnBorrar.textContent = "Borrar Stand";
+            btnBorrar.className = "btn-borrar";
+            
+            btnBorrar.addEventListener("click", function() {
+                let seguro = confirm("¿Estás seguro de que quieres borrar a " + stand.nombre + "?");
+                
+                if (seguro == true) {
+                    let urlBorrar = "http://localhost:3000/stand/" + stand.id;
+                    
+                    fetch(urlBorrar, {
+                        method: "DELETE"
+                    })
+                    .then(function(respuesta) {
+                        return respuesta.json();
+                    })
+                    .then(function(datos) {
+                        alert("Stand borrado correctamente.");
+                        
+                        // Volver a la página principal
+                        let enPaginas = window.location.pathname.includes("/pages/");
+                        if (enPaginas) {
+                            window.location.href = "../index.html";
+                        } else {
+                            window.location.href = "index.html";
+                        }
+                    })
+                    .catch(function(error) {
+                        console.log("Error al borrar:", error);
+                        alert("No se pudo borrar el stand.");
+                    });
+                }
+            });
+            imgWrapper.appendChild(btnBorrar);
+
             const infoWrapper = document.createElement("div");
             infoWrapper.className = "stand-info-wrapper";
 
@@ -248,5 +284,54 @@ if (btnRandom) {
             .catch(error => {
                 console.log("Error al cargar stand random:", error);
             });
+    });
+}
+
+// LÓGICA DE INSERCIÓN DE STANDS
+const formInsertarStand = document.getElementById("form-insertar-stand");
+if (formInsertarStand) {
+    formInsertarStand.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        // Recoger los valores del formulario
+        const formData = new FormData(formInsertarStand);
+        const data = Object.fromEntries(formData.entries());
+
+        // Si id_evolucion está vacío, mandarlo como null
+        if (!data.id_evolucion || data.id_evolucion.trim() === "") {
+            data.id_evolucion = null;
+        }
+
+        // Hacer la petición POST al backend
+        fetch(ENDPOINT_STANDS, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Error en la inserción");
+            }
+            return response.json();
+        })
+        .then(result => {
+            const mensajeDiv = document.getElementById("mensaje-resultado");
+            mensajeDiv.style.color = "#00ffff";
+            mensajeDiv.textContent = result.mensaje || "Stand insertado correctamente.";
+            formInsertarStand.reset(); // Limpiar el formulario
+
+            // Quitar el mensaje después de 3 segundos
+            setTimeout(() => {
+                mensajeDiv.textContent = "";
+            }, 3000);
+        })
+        .catch(error => {
+            console.error("Error al insertar el stand:", error);
+            const mensajeDiv = document.getElementById("mensaje-resultado");
+            mensajeDiv.style.color = "#ff4ecd";
+            mensajeDiv.textContent = "Error al intentar insertar el stand.";
+        });
     });
 }

@@ -88,7 +88,7 @@ server.post("/stand", (req, res) => {
   pool_mysql.query(
     sql,
     [id_evolucion, nombre, descripcion, aparicion, imagen_manga, imagen_anime, poder, velocidad, alcance, durabilidad, precis, potencial],
-    (error, resultado) => {
+    (error, res) => {
       if (error) {
         console.error("Error en INSERT:", error);
         return res.status(500).json({ error });
@@ -120,6 +120,22 @@ server.get("/buscar/stand", (req, res) => {
       return res.status(500).json({ error });
     }
     res.json(resultados);
+  });
+});
+
+// ENDPOINT PA BORRAR
+server.delete("/stand/:id", (req, res) => {
+  const id = req.params.id;
+
+  const sql = "DELETE FROM stand WHERE id = ?";
+
+  pool_mysql.query(sql, [id], (error) => {
+    if (error) {
+      console.error("Error en DELETE:", error);
+      return res.status(500).json({ error });
+    }
+
+    res.json({ mensaje: "Stand eliminado" });
   });
 });
 
