@@ -75,10 +75,43 @@ function cargarDetallesStand(id) {
             imgWrapper.className = "stand-imagen-wrapper";
 
             const img = document.createElement("img");
-            img.src = stand.imagen_manga || "";
+            img.src = stand.imagen_manga || stand.imagen_anime || "";
             img.alt = stand.nombre || "Imagen no disponible";
 
-            imgWrapper.appendChild(img);
+            // Botones para alternar imagen
+            const divBotonesImg = document.createElement("div");
+            divBotonesImg.style.display = "flex";
+            divBotonesImg.style.gap = "8px";
+            divBotonesImg.style.marginBottom = "12px";
+            divBotonesImg.style.justifyContent = "center";
+
+            const estiloBotones = "padding: 4px 12px; font-size: 0.8em; border-radius: 12px; border: 1px solid #ffd700; background: #222; color: #ffd700; cursor: pointer; transition: 0.2s;";
+
+            const btnManga = document.createElement("button");
+            btnManga.textContent = "Manga";
+            btnManga.style.cssText = estiloBotones;
+            btnManga.addEventListener("mouseover", () => { btnManga.style.background = "#ffd700"; btnManga.style.color = "#000"; });
+            btnManga.addEventListener("mouseout", () => { btnManga.style.background = "#222"; btnManga.style.color = "#ffd700"; });
+            btnManga.onclick = () => { img.src = stand.imagen_manga || ""; };
+
+            const btnAnime = document.createElement("button");
+            btnAnime.textContent = "Anime";
+            btnAnime.style.cssText = estiloBotones;
+            btnAnime.addEventListener("mouseover", () => { btnAnime.style.background = "#ffd700"; btnAnime.style.color = "#000"; });
+            btnAnime.addEventListener("mouseout", () => { btnAnime.style.background = "#222"; btnAnime.style.color = "#ffd700"; });
+            btnAnime.onclick = () => { 
+                if(stand.imagen_anime) {
+                    img.src = stand.imagen_anime; 
+                } else {
+                    alert("No hay imagen de anime para este stand.");
+                }
+            };
+
+            divBotonesImg.appendChild(btnManga);
+            divBotonesImg.appendChild(btnAnime);
+            
+            imgWrapper.appendChild(divBotonesImg); // Primero los botones
+            imgWrapper.appendChild(img);           // Luego la imagen
 
             // crear botón de borrar
             let btnBorrar = document.createElement("button");
