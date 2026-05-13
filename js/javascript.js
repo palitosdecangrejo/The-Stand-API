@@ -80,25 +80,16 @@ function cargarDetallesStand(id) {
 
             // Botones para alternar imagen
             const divBotonesImg = document.createElement("div");
-            divBotonesImg.style.display = "flex";
-            divBotonesImg.style.gap = "8px";
-            divBotonesImg.style.marginBottom = "12px";
-            divBotonesImg.style.justifyContent = "center";
-
-            const estiloBotones = "padding: 4px 12px; font-size: 0.8em; border-radius: 12px; border: 1px solid #ffd700; background: #222; color: #ffd700; cursor: pointer; transition: 0.2s;";
+            divBotonesImg.className = "contenedor-botones-imagen";
 
             const btnManga = document.createElement("button");
             btnManga.textContent = "Manga";
-            btnManga.style.cssText = estiloBotones;
-            btnManga.addEventListener("mouseover", () => { btnManga.style.background = "#ffd700"; btnManga.style.color = "#000"; });
-            btnManga.addEventListener("mouseout", () => { btnManga.style.background = "#222"; btnManga.style.color = "#ffd700"; });
+            btnManga.className = "btn-alternar-imagen";
             btnManga.onclick = () => { img.src = stand.imagen_manga || ""; };
 
             const btnAnime = document.createElement("button");
             btnAnime.textContent = "Anime";
-            btnAnime.style.cssText = estiloBotones;
-            btnAnime.addEventListener("mouseover", () => { btnAnime.style.background = "#ffd700"; btnAnime.style.color = "#000"; });
-            btnAnime.addEventListener("mouseout", () => { btnAnime.style.background = "#222"; btnAnime.style.color = "#ffd700"; });
+            btnAnime.className = "btn-alternar-imagen";
             btnAnime.onclick = () => { 
                 if(stand.imagen_anime) {
                     img.src = stand.imagen_anime; 
@@ -215,7 +206,7 @@ function activarBarraBusqueda() {
                 buscarContenido(texto);
             } else {
                 resultadosBusqueda.innerHTML = "";
-                resultadosBusqueda.style.display = "none";
+                resultadosBusqueda.classList.add("oculto");
             }
         });
     }
@@ -225,7 +216,7 @@ function activarBarraBusqueda() {
 
         if (cajaBusqueda && !cajaBusqueda.contains(evento.target)) {
             if (resultadosBusqueda) {
-                resultadosBusqueda.style.display = "none";
+                resultadosBusqueda.classList.add("oculto");
             }
         }
     });
@@ -251,7 +242,11 @@ function mostrarResultadosBusqueda(resultados) {
 
     let resultadosValidos = resultados.slice(0, 5);
 
-    resultadosBusqueda.style.display = resultadosValidos.length ? "block" : "none";
+    if (resultadosValidos.length) {
+        resultadosBusqueda.classList.remove("oculto");
+    } else {
+        resultadosBusqueda.classList.add("oculto");
+    }
 
     resultadosValidos.forEach(function (stand) {
         let div = document.createElement("div");
@@ -316,24 +311,22 @@ if (inputBuscarPortador) {
                 .then(datos => {
                     resultadosPortador.innerHTML = "";
                     let limitados = datos.slice(0, 5);
-                    resultadosPortador.style.display = limitados.length ? "block" : "none";
+                    if (limitados.length) {
+                        resultadosPortador.classList.remove("oculto");
+                    } else {
+                        resultadosPortador.classList.add("oculto");
+                    }
 
                     limitados.forEach(portador => {
                         let div = document.createElement("div");
-                        div.style.padding = "8px";
-                        div.style.cursor = "pointer";
-                        div.style.borderBottom = "1px solid #444";
+                        div.className = "resultado-portador-item";
                         div.textContent = portador.nombre;
-                        
-                        // Efecto hover simple en JS
-                        div.addEventListener("mouseover", () => div.style.backgroundColor = "#444");
-                        div.addEventListener("mouseout", () => div.style.backgroundColor = "transparent");
 
                         div.addEventListener("click", function() {
                             inputBuscarPortador.value = portador.nombre;
                             idPortadorInput.value = portador.id;
                             portadorSeleccionadoText.textContent = "Portador seleccionado: " + portador.nombre;
-                            resultadosPortador.style.display = "none";
+                            resultadosPortador.classList.add("oculto");
                         });
 
                         resultadosPortador.appendChild(div);
@@ -341,14 +334,14 @@ if (inputBuscarPortador) {
                 })
                 .catch(error => console.error("Error al buscar portador:", error));
         } else {
-            resultadosPortador.style.display = "none";
+            resultadosPortador.classList.add("oculto");
         }
     });
 
     // Cerrar si se hace click fuera
     document.addEventListener("click", function(e) {
         if (!inputBuscarPortador.contains(e.target) && !resultadosPortador.contains(e.target)) {
-            resultadosPortador.style.display = "none";
+            resultadosPortador.classList.add("oculto");
         }
     });
 }
@@ -387,19 +380,20 @@ if (formInsertarStand) {
             })
             .then(result => {
                 const mensajeDiv = document.getElementById("mensaje-resultado");
-                mensajeDiv.style.color = "#00ffff";
+                mensajeDiv.className = "mensaje-exito";
                 mensajeDiv.textContent = result.mensaje || "Stand insertado correctamente.";
                 formInsertarStand.reset(); // Limpiar el formulario
 
                 // Quitar el mensaje después de 3 segundos
                 setTimeout(() => {
                     mensajeDiv.textContent = "";
+                    mensajeDiv.className = "";
                 }, 3000);
             })
             .catch(error => {
                 console.error("Error al insertar el stand:", error);
                 const mensajeDiv = document.getElementById("mensaje-resultado");
-                mensajeDiv.style.color = "#ff4ecd";
+                mensajeDiv.className = "mensaje-error";
                 mensajeDiv.textContent = "Error al intentar insertar el stand.";
             });
     });
