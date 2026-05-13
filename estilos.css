@@ -348,7 +348,7 @@ footer p {
     }
 }
 
-/* CLASES UTILIDAD AÑADIDAS PARA REEMPLAZAR ESTILOS INLINE */
+/* INLINE */
 .header-logo-link {
     color: inherit;
     text-decoration: none;
@@ -360,7 +360,7 @@ footer p {
     margin-bottom: 20px;
 }
 
-/* FORMULARIO DE INSERCIÓN */
+/* FORMULARIO INSERTAR TEMPORAL */
 .form-container {
     width: 80%;
     margin: 0 auto;

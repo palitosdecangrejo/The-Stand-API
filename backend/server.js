@@ -123,7 +123,7 @@ server.get("/buscar/stand", (req, res) => {
   });
 });
 
-// ENDPOINT PA BORRAR
+// ENDPOINT PA BORRAR TEMPORAL
 server.delete("/stand/:id", (req, res) => {
   const id = req.params.id;
 

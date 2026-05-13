@@ -80,45 +80,27 @@ function cargarDetallesStand(id) {
             img.src = stand.imagen_manga || "";
             img.alt = stand.nombre || "Imagen no disponible";
 
-            /**
-            const portador = document.createElement("p");
-            portador.textContent = stand.portador;
-            */
-
             imgWrapper.appendChild(img);
 
-            // Crear botón de borrar
+            // crear botón de borrar
             let btnBorrar = document.createElement("button");
             btnBorrar.textContent = "Borrar Stand";
             btnBorrar.className = "btn-borrar";
-            
-            btnBorrar.addEventListener("click", function() {
-                let seguro = confirm("¿Estás seguro de que quieres borrar a " + stand.nombre + "?");
-                
-                if (seguro == true) {
-                    let urlBorrar = "http://localhost:3000/stand/" + stand.id;
-                    
-                    fetch(urlBorrar, {
-                        method: "DELETE"
-                    })
-                    .then(function(respuesta) {
-                        return respuesta.json();
-                    })
-                    .then(function(datos) {
-                        alert("Stand borrado correctamente.");
-                        
-                        // Volver a la página principal
-                        let enPaginas = window.location.pathname.includes("/pages/");
-                        if (enPaginas) {
-                            window.location.href = "../index.html";
-                        } else {
-                            window.location.href = "index.html";
-                        }
-                    })
-                    .catch(function(error) {
-                        console.log("Error al borrar:", error);
-                        alert("No se pudo borrar el stand.");
-                    });
+
+            btnBorrar.addEventListener("click", function () {
+                let urlBorrar = "http://localhost:3000/stand/" + stand.id;
+
+                fetch(urlBorrar, {
+                    method: "DELETE"
+                });
+
+                alert("Stand eliminado");
+
+                // volver al index
+                if (window.location.pathname.includes("/pages/")) {
+                    window.location.href = "../index.html";
+                } else {
+                    window.location.href = "index.html";
                 }
             });
             imgWrapper.appendChild(btnBorrar);
@@ -310,28 +292,28 @@ if (formInsertarStand) {
             },
             body: JSON.stringify(data)
         })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error("Error en la inserción");
-            }
-            return response.json();
-        })
-        .then(result => {
-            const mensajeDiv = document.getElementById("mensaje-resultado");
-            mensajeDiv.style.color = "#00ffff";
-            mensajeDiv.textContent = result.mensaje || "Stand insertado correctamente.";
-            formInsertarStand.reset(); // Limpiar el formulario
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Error en la inserción");
+                }
+                return response.json();
+            })
+            .then(result => {
+                const mensajeDiv = document.getElementById("mensaje-resultado");
+                mensajeDiv.style.color = "#00ffff";
+                mensajeDiv.textContent = result.mensaje || "Stand insertado correctamente.";
+                formInsertarStand.reset(); // Limpiar el formulario
 
-            // Quitar el mensaje después de 3 segundos
-            setTimeout(() => {
-                mensajeDiv.textContent = "";
-            }, 3000);
-        })
-        .catch(error => {
-            console.error("Error al insertar el stand:", error);
-            const mensajeDiv = document.getElementById("mensaje-resultado");
-            mensajeDiv.style.color = "#ff4ecd";
-            mensajeDiv.textContent = "Error al intentar insertar el stand.";
-        });
+                // Quitar el mensaje después de 3 segundos
+                setTimeout(() => {
+                    mensajeDiv.textContent = "";
+                }, 3000);
+            })
+            .catch(error => {
+                console.error("Error al insertar el stand:", error);
+                const mensajeDiv = document.getElementById("mensaje-resultado");
+                mensajeDiv.style.color = "#ff4ecd";
+                mensajeDiv.textContent = "Error al intentar insertar el stand.";
+            });
     });
 }
