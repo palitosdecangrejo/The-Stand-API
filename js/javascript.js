@@ -20,34 +20,32 @@ function cargarStands() {
 
             datos.forEach(stand => {
 
-                if (stand.id >= 1 && stand.id <= 15) {
-                    // crear div carta con id para identificarlo
-                    const card = document.createElement("div");
-                    card.className = "card-stand";
-                    card.id = `card-stand-${stand.id}`;
-                    card.style.cursor = 'pointer';
+                // crear div carta con id para identificarlo
+                const card = document.createElement("div");
+                card.className = "card-stand";
+                card.id = `card-stand-${stand.id}`;
+                card.style.cursor = 'pointer';
 
-                    // crear imagen con la url de la manga
-                    const img = document.createElement("img");
-                    img.src = stand.imagen_manga || "";
-                    img.alt = stand.nombre || "Imagen no disponible";
+                // crear imagen con la url de la manga
+                const img = document.createElement("img");
+                img.src = stand.imagen_manga || "";
+                img.alt = stand.nombre || "Imagen no disponible";
 
-                    const titulo = document.createElement("h3");
-                    titulo.textContent = stand.nombre;
+                const titulo = document.createElement("h3");
+                titulo.textContent = stand.nombre;
 
-                    // añadir imagen y título a la carta
-                    card.appendChild(img);
-                    card.appendChild(titulo);
+                // añadir imagen y título a la carta
+                card.appendChild(img);
+                card.appendChild(titulo);
 
-                    // click para ir a la página de detalles
-                    card.addEventListener('click', () => {
-                        const isRoot = !window.location.pathname.includes('/pages/');
-                        window.location.href = isRoot ? `pages/stand.html?id=${stand.id}` : `stand.html?id=${stand.id}`;
-                    });
+                // click para ir a la página de detalles
+                card.addEventListener('click', () => {
+                    const isRoot = !window.location.pathname.includes('/pages/');
+                    window.location.href = isRoot ? `pages/stand.html?id=${stand.id}` : `stand.html?id=${stand.id}`;
+                });
 
-                    // añadir la carta al contenedor principal
-                    principal.appendChild(card);
-                }
+                // añadir la carta al contenedor principal
+                principal.appendChild(card);
             });
         })
         .catch(error => console.error("Error al cargar los stands:", error));
@@ -271,6 +269,57 @@ if (btnRandom) {
 
 // LÓGICA DE INSERCIÓN DE STANDS
 const formInsertarStand = document.getElementById("form-insertar-stand");
+const inputBuscarPortador = document.getElementById("buscar-portador");
+const resultadosPortador = document.getElementById("resultados-portador");
+const idPortadorInput = document.getElementById("id_portador");
+const portadorSeleccionadoText = document.getElementById("portador-seleccionado");
+
+if (inputBuscarPortador) {
+    inputBuscarPortador.addEventListener("input", function() {
+        let texto = inputBuscarPortador.value.trim();
+        if (texto.length > 0) {
+            fetch("http://localhost:3000/buscar/portador?q=" + encodeURIComponent(texto))
+                .then(res => res.json())
+                .then(datos => {
+                    resultadosPortador.innerHTML = "";
+                    let limitados = datos.slice(0, 5);
+                    resultadosPortador.style.display = limitados.length ? "block" : "none";
+
+                    limitados.forEach(portador => {
+                        let div = document.createElement("div");
+                        div.style.padding = "8px";
+                        div.style.cursor = "pointer";
+                        div.style.borderBottom = "1px solid #444";
+                        div.textContent = portador.nombre;
+                        
+                        // Efecto hover simple en JS
+                        div.addEventListener("mouseover", () => div.style.backgroundColor = "#444");
+                        div.addEventListener("mouseout", () => div.style.backgroundColor = "transparent");
+
+                        div.addEventListener("click", function() {
+                            inputBuscarPortador.value = portador.nombre;
+                            idPortadorInput.value = portador.id;
+                            portadorSeleccionadoText.textContent = "Portador seleccionado: " + portador.nombre;
+                            resultadosPortador.style.display = "none";
+                        });
+
+                        resultadosPortador.appendChild(div);
+                    });
+                })
+                .catch(error => console.error("Error al buscar portador:", error));
+        } else {
+            resultadosPortador.style.display = "none";
+        }
+    });
+
+    // Cerrar si se hace click fuera
+    document.addEventListener("click", function(e) {
+        if (!inputBuscarPortador.contains(e.target) && !resultadosPortador.contains(e.target)) {
+            resultadosPortador.style.display = "none";
+        }
+    });
+}
+
 if (formInsertarStand) {
     formInsertarStand.addEventListener("submit", function (e) {
         e.preventDefault();
@@ -282,6 +331,11 @@ if (formInsertarStand) {
         // Si id_evolucion está vacío, mandarlo como null
         if (!data.id_evolucion || data.id_evolucion.trim() === "") {
             data.id_evolucion = null;
+        }
+
+        // Si id_portador está vacío, eliminarlo para que no se envíe string vacío
+        if (!data.id_portador || data.id_portador.trim() === "") {
+            delete data.id_portador;
         }
 
         // Hacer la petición POST al backend

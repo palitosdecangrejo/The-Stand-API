@@ -78,7 +78,7 @@ server.get("/portador", (req, res) => {
 });
 
 server.post("/stand", (req, res) => {
-  const { id_evolucion, nombre, descripcion, aparicion, imagen_manga, imagen_anime, poder, velocidad, alcance, durabilidad, precis, potencial } = req.body;
+  const { id_evolucion, nombre, descripcion, aparicion, imagen_manga, imagen_anime, poder, velocidad, alcance, durabilidad, precis, potencial, id_portador } = req.body;
 
   const sql = `
     INSERT INTO stand (id_evolucion, nombre, descripcion, aparicion, imagen_manga, imagen_anime, poder, velocidad, alcance, durabilidad, precis, potencial)
@@ -88,16 +88,31 @@ server.post("/stand", (req, res) => {
   pool_mysql.query(
     sql,
     [id_evolucion, nombre, descripcion, aparicion, imagen_manga, imagen_anime, poder, velocidad, alcance, durabilidad, precis, potencial],
-    (error, res) => {
+    (error, resultados) => {
       if (error) {
         console.error("Error en INSERT:", error);
         return res.status(500).json({ error });
       }
 
-      res.json({
-        mensaje: "Stand insertado correctamente",
-        datos: { id_evolucion, nombre, descripcion, aparicion, imagen_manga, imagen_anime, poder, velocidad, alcance, durabilidad, precis, potencial }
-      });
+      const idStandInsertado = resultados.insertId;
+
+      if (id_portador) {
+        const sqlPortador = "INSERT INTO stand_portador (id_stand, id_portador) VALUES (?, ?)";
+        pool_mysql.query(sqlPortador, [idStandInsertado, id_portador], (errPortador) => {
+          if (errPortador) {
+             console.error("Error al vincular portador:", errPortador);
+          }
+          res.json({
+            mensaje: "Stand y Portador insertados correctamente",
+            datos: { id: idStandInsertado, nombre, id_portador }
+          });
+        });
+      } else {
+        res.json({
+          mensaje: "Stand insertado correctamente",
+          datos: { id: idStandInsertado, nombre }
+        });
+      }
     }
   );
 });
@@ -123,19 +138,50 @@ server.get("/buscar/stand", (req, res) => {
   });
 });
 
+server.get("/buscar/portador", (req, res) => {
+  const texto = req.query.q;
+
+  if (!texto) {
+    return res.status(400).json({ error: "Falta el texto de búsqueda" });
+  }
+
+  const sql = `
+    SELECT *
+    FROM portador
+    WHERE nombre LIKE ?`;
+
+  pool_mysql.query(sql, [`%${texto}%`], (error, resultados) => {
+    if (error) {
+      console.error("Error en la búsqueda de portador: ", error);
+      return res.status(500).json({ error });
+    }
+    res.json(resultados);
+  });
+});
+
 // ENDPOINT PA BORRAR TEMPORAL
 server.delete("/stand/:id", (req, res) => {
   const id = req.params.id;
 
-  const sql = "DELETE FROM stand WHERE id = ?";
-
-  pool_mysql.query(sql, [id], (error) => {
-    if (error) {
-      console.error("Error en DELETE:", error);
-      return res.status(500).json({ error });
+  // Primero borramos la relación en la tabla intermedia
+  const sqlRelacion = "DELETE FROM stand_portador WHERE id_stand = ?";
+  
+  pool_mysql.query(sqlRelacion, [id], (errorRelacion) => {
+    if (errorRelacion) {
+      console.error("Error al borrar la relación stand-portador:", errorRelacion);
+      return res.status(500).json({ error: errorRelacion });
     }
 
-    res.json({ mensaje: "Stand eliminado" });
+    // Una vez borrada la relación (o si no existía), borramos el stand
+    const sqlStand = "DELETE FROM stand WHERE id = ?";
+    pool_mysql.query(sqlStand, [id], (error) => {
+      if (error) {
+        console.error("Error en DELETE:", error);
+        return res.status(500).json({ error });
+      }
+
+      res.json({ mensaje: "Stand eliminado correctamente" });
+    });
   });
 });
 
