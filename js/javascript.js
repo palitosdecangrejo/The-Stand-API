@@ -90,9 +90,9 @@ function cargarDetallesStand(id) {
             const btnAnime = document.createElement("button");
             btnAnime.textContent = "Anime";
             btnAnime.className = "btn-alternar-imagen";
-            btnAnime.onclick = () => { 
-                if(stand.imagen_anime) {
-                    img.src = stand.imagen_anime; 
+            btnAnime.onclick = () => {
+                if (stand.imagen_anime) {
+                    img.src = stand.imagen_anime;
                 } else {
                     alert("No hay imagen de anime para este stand.");
                 }
@@ -100,7 +100,7 @@ function cargarDetallesStand(id) {
 
             divBotonesImg.appendChild(btnManga);
             divBotonesImg.appendChild(btnAnime);
-            
+
             imgWrapper.appendChild(divBotonesImg); // Primero los botones
             imgWrapper.appendChild(img);           // Luego la imagen
 
@@ -303,7 +303,7 @@ const idPortadorInput = document.getElementById("id_portador");
 const portadorSeleccionadoText = document.getElementById("portador-seleccionado");
 
 if (inputBuscarPortador) {
-    inputBuscarPortador.addEventListener("input", function() {
+    inputBuscarPortador.addEventListener("input", function () {
         let texto = inputBuscarPortador.value.trim();
         if (texto.length > 0) {
             fetch("http://localhost:3000/buscar/portador?q=" + encodeURIComponent(texto))
@@ -322,10 +322,9 @@ if (inputBuscarPortador) {
                         div.className = "resultado-portador-item";
                         div.textContent = portador.nombre;
 
-                        div.addEventListener("click", function() {
+                        div.addEventListener("click", function () {
                             inputBuscarPortador.value = portador.nombre;
                             idPortadorInput.value = portador.id;
-                            portadorSeleccionadoText.textContent = "Portador seleccionado: " + portador.nombre;
                             resultadosPortador.classList.add("oculto");
                         });
 
@@ -339,7 +338,7 @@ if (inputBuscarPortador) {
     });
 
     // Cerrar si se hace click fuera
-    document.addEventListener("click", function(e) {
+    document.addEventListener("click", function (e) {
         if (!inputBuscarPortador.contains(e.target) && !resultadosPortador.contains(e.target)) {
             resultadosPortador.classList.add("oculto");
         }
