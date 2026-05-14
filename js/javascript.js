@@ -78,7 +78,7 @@ function cargarDetallesStand(id) {
             img.src = stand.imagen_manga || stand.imagen_anime || "";
             img.alt = stand.nombre || "Imagen no disponible";
 
-            // Botones para alternar imagen
+            // alternar imagen
             const divBotonesImg = document.createElement("div");
             divBotonesImg.className = "contenedor-botones-imagen";
 
@@ -101,8 +101,8 @@ function cargarDetallesStand(id) {
             divBotonesImg.appendChild(btnManga);
             divBotonesImg.appendChild(btnAnime);
 
-            imgWrapper.appendChild(divBotonesImg); // Primero los botones
-            imgWrapper.appendChild(img);           // Luego la imagen
+            imgWrapper.appendChild(divBotonesImg);
+            imgWrapper.appendChild(img);
 
             // crear botón de borrar
             let btnBorrar = document.createElement("button");
@@ -178,7 +178,7 @@ function cargarDetallesStand(id) {
         });
 }
 
-// inicialización
+// iniciar constantes
 const urlParams = new URLSearchParams(window.location.search);
 const standId = urlParams.get('id');
 
@@ -337,7 +337,7 @@ if (inputBuscarPortador) {
         }
     });
 
-    // Cerrar si se hace click fuera
+    // cerrar si se hace click fuera
     document.addEventListener("click", function (e) {
         if (!inputBuscarPortador.contains(e.target) && !resultadosPortador.contains(e.target)) {
             resultadosPortador.classList.add("oculto");
@@ -349,21 +349,21 @@ if (formInsertarStand) {
     formInsertarStand.addEventListener("submit", function (e) {
         e.preventDefault();
 
-        // Recoger los valores del formulario
+        // coger valores del formulario
         const formData = new FormData(formInsertarStand);
         const data = Object.fromEntries(formData.entries());
 
-        // Si id_evolucion está vacío, mandarlo como null
+        // si no hay evo, mandarlo como null
         if (!data.id_evolucion || data.id_evolucion.trim() === "") {
             data.id_evolucion = null;
         }
 
-        // Si id_portador está vacío, eliminarlo para que no se envíe string vacío
+        // si no hay portador, eliminarlo
         if (!data.id_portador || data.id_portador.trim() === "") {
             delete data.id_portador;
         }
 
-        // Hacer la petición POST al backend
+        // hacer la petición POST
         fetch(ENDPOINT_STANDS, {
             method: "POST",
             headers: {
@@ -381,9 +381,9 @@ if (formInsertarStand) {
                 const mensajeDiv = document.getElementById("mensaje-resultado");
                 mensajeDiv.className = "mensaje-exito";
                 mensajeDiv.textContent = result.mensaje || "Stand insertado correctamente.";
-                formInsertarStand.reset(); // Limpiar el formulario
+                formInsertarStand.reset(); // limpiar el formulario
 
-                // Quitar el mensaje después de 3 segundos
+                // quitar el mensaje después de 3 segundos
                 setTimeout(() => {
                     mensajeDiv.textContent = "";
                     mensajeDiv.className = "";
