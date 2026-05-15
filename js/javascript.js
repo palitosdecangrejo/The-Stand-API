@@ -1,7 +1,5 @@
 const ENDPOINT_STANDS = "http://localhost:3000/stand";
-
 const ENDPOINT_USUARIOS = "http://localhost:3000/portador";
-
 const ENDPOINT_BUSQUEDA = "http://localhost:3000/buscar/stand?q=";
 
 function cargarStands() {
@@ -178,25 +176,9 @@ function cargarDetallesStand(id) {
         });
 }
 
-// iniciar constantes
-const urlParams = new URLSearchParams(window.location.search);
-const standId = urlParams.get('id');
-
-if (standId) {
-    // si estamos en stand.html y hay un ID
-    cargarDetallesStand(standId);
-} else {
-    // si estamos en index.html cargar todos los stands
-    const principal = document.getElementById("principal-container");
-    if (principal) {
-        cargarStands();
-    }
-}
-
-const inputBusqueda = document.getElementById("input-busqueda");
-const resultadosBusqueda = document.getElementById("resultados-busqueda");
-
 function activarBarraBusqueda() {
+    const inputBusqueda = document.getElementById("input-busqueda");
+    const resultadosBusqueda = document.getElementById("resultados-busqueda");
 
     if (inputBusqueda) {
         inputBusqueda.addEventListener("input", function () {
@@ -205,8 +187,10 @@ function activarBarraBusqueda() {
             if (texto.length > 0) {
                 buscarContenido(texto);
             } else {
-                resultadosBusqueda.innerHTML = "";
-                resultadosBusqueda.classList.add("oculto");
+                if (resultadosBusqueda) {
+                    resultadosBusqueda.innerHTML = "";
+                    resultadosBusqueda.classList.add("oculto");
+                }
             }
         });
     }
@@ -223,7 +207,6 @@ function activarBarraBusqueda() {
 }
 
 function buscarContenido(texto) {
-
     fetch("http://localhost:3000/buscar/stand?q=" + encodeURIComponent(texto))
         .then(function (respuesta) {
             return respuesta.json();
@@ -237,6 +220,8 @@ function buscarContenido(texto) {
 }
 
 function mostrarResultadosBusqueda(resultados) {
+    const resultadosBusqueda = document.getElementById("resultados-busqueda");
+    if (!resultadosBusqueda) return;
 
     resultadosBusqueda.innerHTML = "";
 
@@ -265,135 +250,145 @@ function mostrarResultadosBusqueda(resultados) {
     });
 }
 
-activarBarraBusqueda();
+document.addEventListener("DOMContentLoaded", () => {
 
-const btnRandom = document.getElementById("btn-random");
+    const urlParams = new URLSearchParams(window.location.search);
+    const standId = urlParams.get('id');
 
-if (btnRandom) {
-    btnRandom.addEventListener("click", function () {
+    if (standId) {
+        // si estamos en stand.html y hay un ID
+        cargarDetallesStand(standId);
+    } else {
+        // si estamos en index.html cargar todos los stands
+        const principal = document.getElementById("principal-container");
+        if (principal) {
+            cargarStands();
+        }
+    }
 
-        fetch(ENDPOINT_STANDS)
+    activarBarraBusqueda();
 
-            .then(res => res.json())
+    const btnRandom = document.getElementById("btn-random");
 
-            .then(datos => {
+    if (btnRandom) {
+        btnRandom.addEventListener("click", function () {
 
-                let indice = Math.floor(Math.random() * datos.length);
-
-                let standRandom = datos[indice];
-
-                const isRoot = !window.location.pathname.includes("/pages/");
-
-                window.location.href = isRoot
-                    ? "pages/stand.html?id=" + standRandom.id
-                    : "stand.html?id=" + standRandom.id;
-            })
-
-            .catch(error => {
-                console.log("Error al cargar stand random:", error);
-            });
-    });
-}
-
-// LÓGICA DE INSERCIÓN DE STANDS
-const formInsertarStand = document.getElementById("form-insertar-stand");
-const inputBuscarPortador = document.getElementById("buscar-portador");
-const resultadosPortador = document.getElementById("resultados-portador");
-const idPortadorInput = document.getElementById("id_portador");
-const portadorSeleccionadoText = document.getElementById("portador-seleccionado");
-
-if (inputBuscarPortador) {
-    inputBuscarPortador.addEventListener("input", function () {
-        let texto = inputBuscarPortador.value.trim();
-        if (texto.length > 0) {
-            fetch("http://localhost:3000/buscar/portador?q=" + encodeURIComponent(texto))
+            fetch(ENDPOINT_STANDS)
                 .then(res => res.json())
                 .then(datos => {
-                    resultadosPortador.innerHTML = "";
-                    let limitados = datos.slice(0, 5);
-                    if (limitados.length) {
-                        resultadosPortador.classList.remove("oculto");
-                    } else {
-                        resultadosPortador.classList.add("oculto");
-                    }
-
-                    limitados.forEach(portador => {
-                        let div = document.createElement("div");
-                        div.className = "resultado-portador-item";
-                        div.textContent = portador.nombre;
-
-                        div.addEventListener("click", function () {
-                            inputBuscarPortador.value = portador.nombre;
-                            idPortadorInput.value = portador.id;
-                            resultadosPortador.classList.add("oculto");
-                        });
-
-                        resultadosPortador.appendChild(div);
-                    });
+                    let indice = Math.floor(Math.random() * datos.length);
+                    let standRandom = datos[indice];
+                    const isRoot = !window.location.pathname.includes("/pages/");
+                    window.location.href = isRoot
+                        ? "pages/stand.html?id=" + standRandom.id
+                        : "stand.html?id=" + standRandom.id;
                 })
-                .catch(error => console.error("Error al buscar portador:", error));
-        } else {
-            resultadosPortador.classList.add("oculto");
-        }
-    });
+                .catch(error => {
+                    console.log("Error al cargar stand random:", error);
+                });
+        });
+    }
 
-    // cerrar si se hace click fuera
-    document.addEventListener("click", function (e) {
-        if (!inputBuscarPortador.contains(e.target) && !resultadosPortador.contains(e.target)) {
-            resultadosPortador.classList.add("oculto");
-        }
-    });
-}
+    // LÓGICA DE INSERCIÓN DE STANDS
+    const formInsertarStand = document.getElementById("form-insertar-stand");
+    const inputBuscarPortador = document.getElementById("buscar-portador");
+    const resultadosPortador = document.getElementById("resultados-portador");
+    const idPortadorInput = document.getElementById("id_portador");
 
-if (formInsertarStand) {
-    formInsertarStand.addEventListener("submit", function (e) {
-        e.preventDefault();
+    if (inputBuscarPortador) {
+        inputBuscarPortador.addEventListener("input", function () {
+            let texto = inputBuscarPortador.value.trim();
+            if (texto.length > 0) {
+                fetch("http://localhost:3000/buscar/portador?q=" + encodeURIComponent(texto))
+                    .then(res => res.json())
+                    .then(datos => {
+                        resultadosPortador.innerHTML = "";
+                        let limitados = datos.slice(0, 5);
+                        if (limitados.length) {
+                            resultadosPortador.classList.remove("oculto");
+                        } else {
+                            resultadosPortador.classList.add("oculto");
+                        }
 
-        // coger valores del formulario
-        const formData = new FormData(formInsertarStand);
-        const data = Object.fromEntries(formData.entries());
+                        limitados.forEach(portador => {
+                            let div = document.createElement("div");
+                            div.className = "resultado-portador-item";
+                            div.textContent = portador.nombre;
 
-        // si no hay evo, mandarlo como null
-        if (!data.id_evolucion || data.id_evolucion.trim() === "") {
-            data.id_evolucion = null;
-        }
+                            div.addEventListener("click", function () {
+                                inputBuscarPortador.value = portador.nombre;
+                                idPortadorInput.value = portador.id;
+                                resultadosPortador.classList.add("oculto");
+                            });
 
-        // si no hay portador, eliminarlo
-        if (!data.id_portador || data.id_portador.trim() === "") {
-            delete data.id_portador;
-        }
+                            resultadosPortador.appendChild(div);
+                        });
+                    })
+                    .catch(error => console.error("Error al buscar portador:", error));
+            } else {
+                resultadosPortador.classList.add("oculto");
+            }
+        });
 
-        // hacer la petición POST
-        fetch(ENDPOINT_STANDS, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(data)
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error("Error en la inserción");
-                }
-                return response.json();
+        // cerrar si se hace click fuera
+        document.addEventListener("click", function (e) {
+            if (!inputBuscarPortador.contains(e.target) && !resultadosPortador.contains(e.target)) {
+                resultadosPortador.classList.add("oculto");
+            }
+        });
+    }
+
+    if (formInsertarStand) {
+        formInsertarStand.addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            // coger valores del formulario
+            const formData = new FormData(formInsertarStand);
+            const data = Object.fromEntries(formData.entries());
+
+            // si no hay evo, mandarlo como null
+            if (!data.id_evolucion || data.id_evolucion.trim() === "") {
+                data.id_evolucion = null;
+            }
+
+            // si no hay portador, eliminarlo
+            if (!data.id_portador || data.id_portador.trim() === "") {
+                delete data.id_portador;
+            }
+
+            // hacer la petición POST
+            fetch(ENDPOINT_STANDS, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
             })
-            .then(result => {
-                const mensajeDiv = document.getElementById("mensaje-resultado");
-                mensajeDiv.className = "mensaje-exito";
-                mensajeDiv.textContent = result.mensaje || "Stand insertado correctamente.";
-                formInsertarStand.reset(); // limpiar el formulario
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Error en la inserción");
+                    }
+                    return response.json();
+                })
+                .then(result => {
+                    const mensajeDiv = document.getElementById("mensaje-resultado");
+                    mensajeDiv.className = "mensaje-exito";
+                    mensajeDiv.textContent = result.mensaje || "Stand insertado correctamente.";
+                    formInsertarStand.reset(); // limpiar el formulario
 
-                // quitar el mensaje después de 3 segundos
-                setTimeout(() => {
-                    mensajeDiv.textContent = "";
-                    mensajeDiv.className = "";
-                }, 3000);
-            })
-            .catch(error => {
-                console.error("Error al insertar el stand:", error);
-                const mensajeDiv = document.getElementById("mensaje-resultado");
-                mensajeDiv.className = "mensaje-error";
-                mensajeDiv.textContent = "Error al intentar insertar el stand.";
-            });
-    });
-}
+                    // quitar el mensaje después de 3 segundos
+                    setTimeout(() => {
+                        mensajeDiv.textContent = "";
+                        mensajeDiv.className = "";
+                    }, 3000);
+                })
+                .catch(error => {
+                    console.error("Error al insertar el stand:", error);
+                    const mensajeDiv = document.getElementById("mensaje-resultado");
+                    mensajeDiv.className = "mensaje-error";
+                    mensajeDiv.textContent = "Error al intentar insertar el stand.";
+                });
+        });
+    }
+
+});
