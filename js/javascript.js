@@ -26,7 +26,7 @@ function cargarStands() {
 
                 // crear imagen con la url de la manga
                 const img = document.createElement("img");
-                img.src = stand.imagen_anime || "";
+                img.src = stand.imagen_manga || "";
                 img.alt = stand.nombre || "Imagen no disponible";
 
                 const titulo = document.createElement("h3");
