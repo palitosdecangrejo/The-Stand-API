@@ -192,29 +192,32 @@ server.get("/stand/portador/evolucion", (req, res) => {
     SELECT
       s.*,
 
-      (
-        SELECT GROUP_CONCAT(p.nombre SEPARATOR ', ')
-        FROM stand_portador sp, portador p
-        WHERE sp.id_portador = p.id
-        AND sp.id_stand = s.id
-      ) AS portadores,
+      evo.id AS id_evolucion_real,
+      evo.nombre AS evolucion,
 
       (
-        SELECT evo.nombre
-        FROM stand evo
-        WHERE evo.id = s.id_evolucion
-      ) AS evolucion
+        SELECT GROUP_CONCAT(CONCAT(p.id, ':', p.nombre) SEPARATOR ', ')
+        FROM stand_portador sp
+        JOIN portador p
+          ON sp.id_portador = p.id
+        WHERE sp.id_stand = s.id
+      ) AS portadores
 
     FROM stand s
+
+    LEFT JOIN stand evo
+      ON s.id_evolucion = evo.id
   `;
 
   pool_mysql.query(sql, (error, resultados) => {
+
     if (error) {
       console.error("Error en la consulta: ", error);
       return res.status(500).json({ error });
     }
 
     res.json(resultados);
+
   });
 
 });

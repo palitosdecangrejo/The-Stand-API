@@ -1,5 +1,5 @@
 const ENDPOINT_STANDS = "http://localhost:3000/stand";
-const ENDPOINT_USUARIOS = "http://localhost:3000/portador";
+const ENDPOINT_PORTADORES = "http://localhost:3000/portador";
 const ENDPOINT_BUSQUEDA = "http://localhost:3000/buscar/stand?q=";
 const ENDPOINT_STAND_PORTADOR_EVOLUCION = "http://localhost:3000/stand/portador/evolucion";
 
@@ -84,6 +84,7 @@ function cargarDetallesStand(id) {
             img.src = stand.imagen_manga || stand.imagen_anime || "";
             img.alt = stand.nombre || "Imagen no disponible";
 
+            // alternar imagen
             const divBotonesImg = document.createElement("div");
             divBotonesImg.className = "contenedor-botones-imagen";
 
@@ -109,11 +110,13 @@ function cargarDetallesStand(id) {
             imgWrapper.appendChild(divBotonesImg);
             imgWrapper.appendChild(img);
 
+            // botón borrar
             let btnBorrar = document.createElement("button");
             btnBorrar.textContent = "Borrar Stand";
             btnBorrar.className = "btn-borrar";
 
             btnBorrar.addEventListener("click", function () {
+
                 let urlBorrar = "http://localhost:3000/stand/" + stand.id;
 
                 fetch(urlBorrar, {
@@ -141,18 +144,77 @@ function cargarDetallesStand(id) {
             desc.className = "desc";
             desc.textContent = stand.descripcion || "Descripción no disponible.";
 
+            const aparicion = document.createElement("p");
+            aparicion.className = "desc";
+            aparicion.textContent = "Aparición: " + (stand.aparicion || "Desconocida");
+
+            // portadores
             const portador = document.createElement("p");
             portador.className = "desc";
-            portador.textContent = "Portador/es: " + (stand.portadores || "Sin portador");
+            portador.textContent = "Portador/es: ";
 
+            if (stand.portadores) {
+
+                let listaPortadores = stand.portadores.split(", ");
+
+                listaPortadores.forEach(function (item, index) {
+
+                    let partesPortador = item.split(":");
+
+                    let idPortador = partesPortador[0];
+                    let nombrePortador = partesPortador[1];
+
+                    let enlace = document.createElement("span");
+
+                    enlace.textContent = nombrePortador;
+                    enlace.style.cursor = "pointer";
+                    enlace.style.textDecoration = "underline";
+
+                    enlace.addEventListener("click", function () {
+                        cargarDetallesPortador(idPortador);
+                    });
+
+                    portador.appendChild(enlace);
+
+                    if (index < listaPortadores.length - 1) {
+                        portador.appendChild(document.createTextNode(", "));
+                    }
+                });
+
+            } else {
+
+                portador.appendChild(document.createTextNode("Sin portador"));
+            }
+
+            // evolución
             const evolucion = document.createElement("p");
             evolucion.className = "desc";
-            evolucion.textContent = "Evolución: " + (stand.evolucion || "Sin evolución");
+            evolucion.textContent = "Evolución: ";
+
+            if (stand.evolucion) {
+
+                let enlaceEvolucion = document.createElement("span");
+
+                enlaceEvolucion.textContent = stand.evolucion;
+                enlaceEvolucion.style.cursor = "pointer";
+                enlaceEvolucion.style.textDecoration = "underline";
+
+                enlaceEvolucion.addEventListener("click", function () {
+                    cargarDetallesStand(stand.id_evolucion_real);
+                });
+
+                evolucion.appendChild(enlaceEvolucion);
+
+            } else {
+
+                evolucion.appendChild(document.createTextNode("Sin evolución"));
+            }
 
             const statsGrid = document.createElement("div");
             statsGrid.className = "stats-grid";
 
             const crearStatBox = (etiqueta, valor) => {
+
                 const box = document.createElement("div");
                 box.className = "stat-box";
 
@@ -166,6 +228,7 @@ function cargarDetallesStand(id) {
 
                 box.appendChild(label);
                 box.appendChild(val);
+
                 return box;
             };
 
@@ -178,17 +241,126 @@ function cargarDetallesStand(id) {
 
             infoWrapper.appendChild(titulo);
             infoWrapper.appendChild(desc);
+            infoWrapper.appendChild(aparicion);
             infoWrapper.appendChild(portador);
             infoWrapper.appendChild(evolucion);
             infoWrapper.appendChild(statsGrid);
+
             layoutDiv.appendChild(imgWrapper);
             layoutDiv.appendChild(infoWrapper);
+
             container.appendChild(layoutDiv);
         })
+
         .catch(error => {
+
             console.error("Error al cargar detalles del stand:", error);
+
             const container = document.getElementById("stand-details-container");
-            if (container) container.innerHTML = "<h2>Error al cargar la información del stand</h2>";
+
+            if (container) {
+                container.innerHTML = "<h2>Error al cargar la información del stand</h2>";
+            }
+        });
+}
+
+function cargarDetallesPortador(id) {
+    fetch(ENDPOINT_PORTADORES)
+        .then(res => res.json())
+        .then(datos => {
+
+            const container = document.getElementById("stand-details-container");
+
+            if (!container) return;
+
+            const portador = datos.find(p => p.id == id);
+
+            if (!portador) {
+                container.innerHTML = "<h2>Portador no encontrado</h2>";
+                return;
+            }
+
+            container.innerHTML = '';
+
+            const layoutDiv = document.createElement("div");
+            layoutDiv.className = "stand-detalles-layout";
+
+            const imgWrapper = document.createElement("div");
+            imgWrapper.className = "stand-imagen-wrapper";
+
+            const img = document.createElement("img");
+            img.src = portador.imagen_manga || portador.imagen_anime || "";
+            img.alt = portador.nombre || "Imagen no disponible";
+
+            // alternar imagen
+            const divBotonesImg = document.createElement("div");
+            divBotonesImg.className = "contenedor-botones-imagen";
+
+            const btnManga = document.createElement("button");
+            btnManga.textContent = "Manga";
+            btnManga.className = "btn-alternar-imagen";
+
+            btnManga.onclick = () => {
+                img.src = portador.imagen_manga || "";
+            };
+
+            const btnAnime = document.createElement("button");
+            btnAnime.textContent = "Anime";
+            btnAnime.className = "btn-alternar-imagen";
+
+            btnAnime.onclick = () => {
+
+                if (portador.imagen_anime) {
+
+                    img.src = portador.imagen_anime;
+
+                } else {
+
+                    alert("No hay imagen de anime para este portador.");
+                }
+            };
+
+            divBotonesImg.appendChild(btnManga);
+            divBotonesImg.appendChild(btnAnime);
+
+            imgWrapper.appendChild(divBotonesImg);
+            imgWrapper.appendChild(img);
+
+            const infoWrapper = document.createElement("div");
+            infoWrapper.className = "stand-info-wrapper";
+
+            const titulo = document.createElement("h2");
+            titulo.textContent = portador.nombre;
+
+            const desc = document.createElement("p");
+            desc.className = "desc";
+            desc.textContent = portador.descripcion || "Descripción no disponible.";
+
+            const aparicion = document.createElement("p");
+            aparicion.className = "desc";
+            aparicion.textContent = "Aparición: " + (portador.aparicion || "Desconocida");
+
+            infoWrapper.appendChild(titulo);
+            infoWrapper.appendChild(desc);
+            infoWrapper.appendChild(aparicion);
+
+            layoutDiv.appendChild(imgWrapper);
+            layoutDiv.appendChild(infoWrapper);
+
+            container.appendChild(layoutDiv);
+
+        })
+
+        .catch(error => {
+
+            console.error("Error al cargar detalles del portador:", error);
+
+            const container = document.getElementById("stand-details-container");
+
+            if (container) {
+
+                container.innerHTML = "<h2>Error al cargar la información del portador</h2>";
+            }
         });
 }
 
