@@ -2,51 +2,58 @@ const ENDPOINT_STANDS = "http://localhost:3000/stand";
 const ENDPOINT_USUARIOS = "http://localhost:3000/portador";
 const ENDPOINT_BUSQUEDA = "http://localhost:3000/buscar/stand?q=";
 
+let todosLosStands = [];
+
 function cargarStands() {
     fetch(ENDPOINT_STANDS)
         .then(res => res.json())
         .then(datos => {
-            const principal = document.getElementById("principal-container");
-
-            // limpiar contenedor por si acaso de antes tiene algo
-            if (principal) {
-                principal.innerHTML = '';
-            } else {
-                console.error("No se encontró el contenedor principal");
-                return;
-            }
-
-            datos.forEach(stand => {
-
-                // crear div carta con id para identificarlo
-                const card = document.createElement("div");
-                card.className = "card-stand";
-                card.id = `card-stand-${stand.id}`;
-                card.style.cursor = 'pointer';
-
-                // crear imagen con la url de la manga
-                const img = document.createElement("img");
-                img.src = stand.imagen_manga || "";
-                img.alt = stand.nombre || "Imagen no disponible";
-
-                const titulo = document.createElement("h3");
-                titulo.textContent = stand.nombre;
-
-                // añadir imagen y título a la carta
-                card.appendChild(img);
-                card.appendChild(titulo);
-
-                // click para ir a la página de detalles
-                card.addEventListener('click', () => {
-                    const isRoot = !window.location.pathname.includes('/pages/');
-                    window.location.href = isRoot ? `pages/stand.html?id=${stand.id}` : `stand.html?id=${stand.id}`;
-                });
-
-                // añadir la carta al contenedor principal
-                principal.appendChild(card);
-            });
+            todosLosStands = datos;
+            mostrarStands(datos);
         })
         .catch(error => console.error("Error al cargar los stands:", error));
+}
+
+function mostrarStands(datos) {
+    const principal = document.getElementById("principal-container");
+
+    // limpiar contenedor por si acaso de antes tiene algo
+    if (principal) {
+        principal.innerHTML = '';
+    } else {
+        console.error("No se encontró el contenedor principal");
+        return;
+    }
+
+    datos.forEach(stand => {
+
+        // crear div carta con id para identificarlo
+        const card = document.createElement("div");
+        card.className = "card-stand";
+        card.id = `card-stand-${stand.id}`;
+        card.style.cursor = 'pointer';
+
+        // crear imagen con la url de la manga
+        const img = document.createElement("img");
+        img.src = stand.imagen_manga || "";
+        img.alt = stand.nombre || "Imagen no disponible";
+
+        const titulo = document.createElement("h3");
+        titulo.textContent = stand.nombre;
+
+        // añadir imagen y título a la carta
+        card.appendChild(img);
+        card.appendChild(titulo);
+
+        // click para ir a la página de detalles
+        card.addEventListener('click', () => {
+            const isRoot = !window.location.pathname.includes('/pages/');
+            window.location.href = isRoot ? `pages/stand.html?id=${stand.id}` : `stand.html?id=${stand.id}`;
+        });
+
+        // añadir la carta al contenedor principal
+        principal.appendChild(card);
+    });
 }
 
 function cargarDetallesStand(id) {
@@ -264,6 +271,30 @@ document.addEventListener("DOMContentLoaded", () => {
         if (principal) {
             cargarStands();
         }
+    }
+
+    // LÓGICA DE FILTROS POR PARTE
+    const botonesFiltro = document.querySelectorAll(".btn-filtro-parte");
+    if (botonesFiltro.length > 0) {
+        botonesFiltro.forEach(boton => {
+            boton.addEventListener("click", function () {
+                // quitar clase activo a todos
+                botonesFiltro.forEach(b => b.classList.remove("activo"));
+                // poner clase activo al clickeado
+                this.classList.add("activo");
+                
+                const parte = this.getAttribute("data-parte");
+                
+                if (parte === "todas") {
+                    mostrarStands(todosLosStands);
+                } else {
+                    const standsFiltrados = todosLosStands.filter(stand => 
+                        stand.aparicion && stand.aparicion.includes(parte)
+                    );
+                    mostrarStands(standsFiltrados);
+                }
+            });
+        });
     }
 
     activarBarraBusqueda();

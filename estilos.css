@@ -132,6 +132,39 @@ main {
     margin: 0 auto;
 }
 
+/* BOTONES PARTES */
+.filtros-partes {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+}
+
+.btn-filtro-parte {
+    background-color: #2b0e3b;
+    color: white;
+    border: 2px solid #00ffff;
+    border-radius: 8px;
+    padding: 10px 15px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-filtro-parte:hover {
+    background-color: #6a00ff;
+    box-shadow: 0 0 10px #00ffff;
+}
+
+.btn-filtro-parte.activo {
+    background-color: #ff4ecd;
+    color: #1a0524;
+    border-color: #ff4ecd;
+    box-shadow: 0 0 15px #ff4ecd;
+}
+
 /* CARDS */
 .card-stand {
     background-color: #2b0e3b;
