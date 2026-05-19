@@ -506,11 +506,11 @@ document.addEventListener("DOMContentLoaded", () => {
                         ? "pages/stand.html?id=" + standRandom.id
                         : "stand.html?id=" + standRandom.id;
 
-                    // Esperamos a que acabe la animación (2.5 segundos) antes de redirigir
+                    // esperamos a que acabe la animación antes de redirigir
                     if (overlay) {
                         setTimeout(() => {
                             window.location.href = urlDestino;
-                        }, 2500);
+                        }, 4500);
                     } else {
                         window.location.href = urlDestino;
                     }
