@@ -39,6 +39,7 @@ iniciarServidor();
 
 server.get("/stand", (req, res) => {
   const nombre = req.query.nombre;
+  const evo = req.query.id_evolucion;
   let valores = [];
   let sql = "SELECT * FROM stand";
 
@@ -183,6 +184,39 @@ server.delete("/stand/:id", (req, res) => {
       res.json({ mensaje: "Stand eliminado correctamente" });
     });
   });
+});
+
+server.get("/stand/portador/evolucion", (req, res) => {
+
+  const sql = `
+    SELECT
+      s.*,
+
+      (
+        SELECT GROUP_CONCAT(p.nombre SEPARATOR ', ')
+        FROM stand_portador sp, portador p
+        WHERE sp.id_portador = p.id
+        AND sp.id_stand = s.id
+      ) AS portadores,
+
+      (
+        SELECT evo.nombre
+        FROM stand evo
+        WHERE evo.id = s.id_evolucion
+      ) AS evolucion
+
+    FROM stand s
+  `;
+
+  pool_mysql.query(sql, (error, resultados) => {
+    if (error) {
+      console.error("Error en la consulta: ", error);
+      return res.status(500).json({ error });
+    }
+
+    res.json(resultados);
+  });
+
 });
 
 // TEST

@@ -1,6 +1,7 @@
 const ENDPOINT_STANDS = "http://localhost:3000/stand";
 const ENDPOINT_USUARIOS = "http://localhost:3000/portador";
 const ENDPOINT_BUSQUEDA = "http://localhost:3000/buscar/stand?q=";
+const ENDPOINT_STAND_PORTADOR_EVOLUCION = "http://localhost:3000/stand/portador/evolucion";
 
 let todosLosStands = [];
 
@@ -56,14 +57,14 @@ function mostrarStands(datos) {
     });
 }
 
+
 function cargarDetallesStand(id) {
-    fetch(ENDPOINT_STANDS)
+    fetch(ENDPOINT_STAND_PORTADOR_EVOLUCION)
         .then(res => res.json())
         .then(datos => {
             const container = document.getElementById("stand-details-container");
             if (!container) return;
 
-            // encontrar el stand por su id
             const stand = datos.find(s => s.id == id);
 
             if (!stand) {
@@ -83,7 +84,6 @@ function cargarDetallesStand(id) {
             img.src = stand.imagen_manga || stand.imagen_anime || "";
             img.alt = stand.nombre || "Imagen no disponible";
 
-            // alternar imagen
             const divBotonesImg = document.createElement("div");
             divBotonesImg.className = "contenedor-botones-imagen";
 
@@ -109,7 +109,6 @@ function cargarDetallesStand(id) {
             imgWrapper.appendChild(divBotonesImg);
             imgWrapper.appendChild(img);
 
-            // crear botón de borrar
             let btnBorrar = document.createElement("button");
             btnBorrar.textContent = "Borrar Stand";
             btnBorrar.className = "btn-borrar";
@@ -123,13 +122,13 @@ function cargarDetallesStand(id) {
 
                 alert("Stand eliminado");
 
-                // volver al index
                 if (window.location.pathname.includes("/pages/")) {
                     window.location.href = "../index.html";
                 } else {
                     window.location.href = "index.html";
                 }
             });
+
             imgWrapper.appendChild(btnBorrar);
 
             const infoWrapper = document.createElement("div");
@@ -141,6 +140,14 @@ function cargarDetallesStand(id) {
             const desc = document.createElement("p");
             desc.className = "desc";
             desc.textContent = stand.descripcion || "Descripción no disponible.";
+
+            const portador = document.createElement("p");
+            portador.className = "desc";
+            portador.textContent = "Portador/es: " + (stand.portadores || "Sin portador");
+
+            const evolucion = document.createElement("p");
+            evolucion.className = "desc";
+            evolucion.textContent = "Evolución: " + (stand.evolucion || "Sin evolución");
 
             const statsGrid = document.createElement("div");
             statsGrid.className = "stats-grid";
@@ -171,6 +178,8 @@ function cargarDetallesStand(id) {
 
             infoWrapper.appendChild(titulo);
             infoWrapper.appendChild(desc);
+            infoWrapper.appendChild(portador);
+            infoWrapper.appendChild(evolucion);
             infoWrapper.appendChild(statsGrid);
             layoutDiv.appendChild(imgWrapper);
             layoutDiv.appendChild(infoWrapper);
