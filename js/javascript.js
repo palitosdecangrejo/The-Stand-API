@@ -291,13 +291,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 botonesFiltro.forEach(b => b.classList.remove("activo"));
                 // poner clase activo al clickeado
                 this.classList.add("activo");
-                
+
                 const parte = this.getAttribute("data-parte");
-                
+
                 if (parte === "todas") {
                     mostrarStands(todosLosStands);
                 } else {
-                    const standsFiltrados = todosLosStands.filter(stand => 
+                    const standsFiltrados = todosLosStands.filter(stand =>
                         stand.aparicion && stand.aparicion.includes(parte)
                     );
                     mostrarStands(standsFiltrados);
@@ -313,15 +313,35 @@ document.addEventListener("DOMContentLoaded", () => {
     if (btnRandom) {
         btnRandom.addEventListener("click", function () {
 
+            // ANIMACION
+            const overlay = document.getElementById("animacion-overlay");
+            const brillo = document.querySelector(".pantalla-brillo");
+            const flecha = document.getElementById("flecha-animacion");
+
+            if (overlay && brillo && flecha) {
+                overlay.classList.remove("oculto");
+                brillo.classList.add("animar-brillo");
+                flecha.classList.add("animar-flecha");
+            }
+
             fetch(ENDPOINT_STANDS)
                 .then(res => res.json())
                 .then(datos => {
                     let indice = Math.floor(Math.random() * datos.length);
                     let standRandom = datos[indice];
                     const isRoot = !window.location.pathname.includes("/pages/");
-                    window.location.href = isRoot
+                    const urlDestino = isRoot
                         ? "pages/stand.html?id=" + standRandom.id
                         : "stand.html?id=" + standRandom.id;
+
+                    // Esperamos a que acabe la animación (2.5 segundos) antes de redirigir
+                    if (overlay) {
+                        setTimeout(() => {
+                            window.location.href = urlDestino;
+                        }, 2500);
+                    } else {
+                        window.location.href = urlDestino;
+                    }
                 })
                 .catch(error => {
                     console.log("Error al cargar stand random:", error);
