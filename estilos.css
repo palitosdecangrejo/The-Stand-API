@@ -557,3 +557,108 @@ footer p {
     background: #ffd700;
     color: #000;
 }
+
+/* ANIMACIÓN STAND RANDOM */
+#animacion-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none;
+    /* no bloquear clics si está oculto */
+}
+
+.pantalla-brillo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #ffd700;
+    /* brillo doradito */
+    opacity: 0;
+}
+
+.animar-brillo {
+    animation: resplandor 2.5s ease-in-out forwards;
+}
+
+#flecha-animacion {
+    position: relative;
+    width: 200px;
+    z-index: 10000;
+    transform: translateY(-120vh) rotate(225deg) scale(1);
+}
+
+.animar-flecha {
+    animation: clavarFlecha 2.5s ease-in-out forwards;
+}
+
+@keyframes resplandor {
+    0% {
+        opacity: 0;
+    }
+
+    65% {
+        opacity: 0;
+        background-color: #ffffff;
+    }
+
+    70% {
+        opacity: 1;
+        background-color: #ffffff;
+    }
+
+    /* momento en q se clava */
+    85% {
+        opacity: 1;
+        background-color: #ea00ff;
+    }
+
+    100% {
+        opacity: 1;
+        background-color: #ffd700;
+    }
+}
+
+@keyframes clavarFlecha {
+    0% {
+        transform: translateY(-120vh) rotate(225deg) scale(1);
+    }
+
+    30% {
+        transform: translateY(0) rotate(225deg) scale(1.5);
+    }
+
+    50% {
+        /* se echa hacia atrás */
+        transform: translateY(-80px) rotate(225deg) scale(1.2);
+    }
+
+    60% {
+        /* toma momentum */
+        transform: translateY(-100px) rotate(225deg) scale(1.2);
+    }
+
+    70% {
+        /* se clava */
+        transform: translateY(400px) rotate(225deg) scale(2);
+        opacity: 1;
+    }
+
+    90% {
+        transform: translateY(400px) rotate(225deg) scale(2);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(400px) rotate(225deg) scale(2);
+        opacity: 0;
+        /* desaparece con fade */
+    }
+}

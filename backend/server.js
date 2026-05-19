@@ -100,7 +100,7 @@ server.post("/stand", (req, res) => {
         const sqlPortador = "INSERT INTO stand_portador (id_stand, id_portador) VALUES (?, ?)";
         pool_mysql.query(sqlPortador, [idStandInsertado, id_portador], (errPortador) => {
           if (errPortador) {
-             console.error("Error al vincular portador:", errPortador);
+            console.error("Error al vincular portador:", errPortador);
           }
           res.json({
             mensaje: "Stand y Portador insertados correctamente",
@@ -163,16 +163,16 @@ server.get("/buscar/portador", (req, res) => {
 server.delete("/stand/:id", (req, res) => {
   const id = req.params.id;
 
-  // Primero borramos la relación en la tabla intermedia
+  // primero borramos la relación en la tabla intermedia
   const sqlRelacion = "DELETE FROM stand_portador WHERE id_stand = ?";
-  
+
   pool_mysql.query(sqlRelacion, [id], (errorRelacion) => {
     if (errorRelacion) {
       console.error("Error al borrar la relación stand-portador:", errorRelacion);
       return res.status(500).json({ error: errorRelacion });
     }
 
-    // Una vez borrada la relación (o si no existía), borramos el stand
+    // una vez borrada la relación (o si no existía), borramos el stand
     const sqlStand = "DELETE FROM stand WHERE id = ?";
     pool_mysql.query(sqlStand, [id], (error) => {
       if (error) {
