@@ -221,9 +221,14 @@ main {
     margin-bottom: 15px;
 }
 
-.stand-info-wrapper .desc {
+.stand-info-wrapper .desc, .texto-normal {
     font-size: 1.4rem;
     margin-bottom: 25px;
+}
+
+.texto-normal {
+    display: flex;
+    justify-content: center;
 }
 
 .stats-grid {
