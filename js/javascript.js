@@ -485,6 +485,9 @@ document.addEventListener("DOMContentLoaded", () => {
     if (btnRandom) {
         btnRandom.addEventListener("click", function () {
 
+            const audioFlecha = document.getElementById("audio-flecha-stand");
+            audioFlecha.play();
+
             // ANIMACION
             const overlay = document.getElementById("animacion-overlay");
             const brillo = document.querySelector(".pantalla-brillo");
