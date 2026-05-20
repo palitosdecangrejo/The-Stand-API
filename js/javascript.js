@@ -2,6 +2,7 @@ const ENDPOINT_STANDS = "http://localhost:3000/stand";
 const ENDPOINT_PORTADORES = "http://localhost:3000/portador";
 const ENDPOINT_BUSQUEDA = "http://localhost:3000/buscar/stand?q=";
 const ENDPOINT_STAND_PORTADOR_EVOLUCION = "http://localhost:3000/stand/portador/evolucion";
+const ENDPOINT_ITUNES = "https://itunes.apple.com/search?limit=1&entity=musicTrack&term=";
 
 let todosLosStands = [];
 
@@ -245,6 +246,40 @@ function cargarDetallesStand(id) {
             infoWrapper.appendChild(portador);
             infoWrapper.appendChild(evolucion);
             infoWrapper.appendChild(statsGrid);
+
+            if (stand.referencia_musical) {
+                const musicaDiv = document.createElement("div");
+                musicaDiv.style.marginTop = "20px";
+
+                const tituloMusica = document.createElement("h3");
+                tituloMusica.textContent = "Referencia Musical: " + stand.referencia_musical;
+                tituloMusica.style.marginBottom = "10px";
+                musicaDiv.appendChild(tituloMusica);
+
+                infoWrapper.appendChild(musicaDiv);
+
+                let urlBusqueda = ENDPOINT_ITUNES + stand.referencia_musical;
+
+                fetch(urlBusqueda)
+                    .then(function (respuesta) {
+                        return respuesta.json();
+                    })
+                    .then(function (datos) {
+                        if (datos.results.length > 0) {
+                            let cancion = datos.results[0];
+
+                            let reproductor = document.createElement("audio");
+                            reproductor.controls = true;
+                            reproductor.src = cancion.previewUrl;
+                            reproductor.style.width = "100%";
+
+                            musicaDiv.appendChild(reproductor);
+                        }
+                    })
+                    .catch(function (error) {
+                        console.log("Error al cargar la música:", error);
+                    });
+            }
 
             layoutDiv.appendChild(imgWrapper);
             layoutDiv.appendChild(infoWrapper);
@@ -589,6 +624,11 @@ document.addEventListener("DOMContentLoaded", () => {
             // si no hay portador, eliminarlo
             if (!data.id_portador || data.id_portador.trim() === "") {
                 delete data.id_portador;
+            }
+
+            // si no hay referencia musical, mandarlo como null
+            if (!data.referencia_musical || data.referencia_musical.trim() === "") {
+                data.referencia_musical = null;
             }
 
             // hacer la petición POST
