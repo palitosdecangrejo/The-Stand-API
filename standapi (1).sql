@@ -86,7 +86,25 @@ INSERT INTO `portador` (`id`, `nombre`, `descripcion`, `aparicion`, `imagen_mang
 (43, 'Yoshikage Kira', 'Versión alternativa del universo JoJolion vinculada a Killer Queen.', 'Parte 8', 'https://static.jojowiki.com/images/5/5c/latest/20210102234928/Yoshikage_Kira_JJL_Infobox_Manga.PNG', NULL),
 (44, 'Jodio Joestar', 'Protagonista de la Parte 9; adolescente ambicioso en Hawái que busca enriquecerse junto a su banda.', 'Parte 9', 'https://static.jojowiki.com/images/8/86/latest/20240714175735/Jodio_Joestar_Infobox_Manga.png', NULL),
 (45, 'Rohan Kishibe', 'Versión alternativa de Rohan; presente en la Parte 9: The JOJOLands.', 'Parte 9', 'https://static.jojowiki.com/images/2/2f/latest/20250111162055/Rohan_Kishibe_TJL_Infobox_Manga.png', NULL),
-(46, 'Yoshifumi Kujo', 'Identidad original relacionada con el origen de Soft and Wet.', 'Parte 8', 'https://static.jojowiki.com/images/a/a3/latest/20210826162618/Josefumi_Kujo_Infobox_Manga.png', NULL);
+(46, 'Yoshifumi Kujo', 'Identidad original relacionada con el origen de Soft and Wet.', 'Parte 8', 'https://static.jojowiki.com/images/a/a3/latest/20210826162618/Josefumi_Kujo_Infobox_Manga.png', NULL),
+(47, 'Mariah', 'Usuaria egipcia al servicio de DIO; confiada y disfruta jugando con sus enemigos.', 'Parte 3', NULL, NULL),
+(48, 'Enya the Hag', 'Anciana seguidora de DIO; manipuladora y figura clave en su organización.', 'Parte 3', NULL, NULL),
+(49, 'Shigekiyo Yangu', 'Estudiante de Morioh; codicioso pero ingenuo, con comportamiento infantil.', 'Parte 4', NULL, NULL),
+(50, 'Tonio Trussardi', 'Chef italiano apasionado; busca mejorar la vida de sus clientes con su cocina.', 'Parte 4', NULL, NULL),
+(51, 'Polpo', 'Capo de Passione; figura influyente que supervisa el ingreso de nuevos miembros.', 'Parte 5', NULL, NULL),
+(52, 'Ghiaccio', 'Miembro de La Squadra; temperamental y obsesivo, se enfurece por detalles mínimos.', 'Parte 5', NULL, NULL),
+(53, 'Cioccolata', 'Ex-cirujano sádico; disfruta causando sufrimiento y caos.', 'Parte 5', NULL, NULL),
+(54, 'Ungalo', 'Hijo de DIO; marginado con una vida marcada por el abandono y la adicción.', 'Parte 6', NULL, NULL),
+(55, 'Rikiel', 'Hijo de DIO; inseguro y ansioso, lucha por ganar confianza.', 'Parte 6', NULL, NULL),
+(56, 'Donatello Versus', 'Hijo de DIO; frío y oportunista, actúa en beneficio propio.', 'Parte 6', NULL, NULL),
+(57, 'Sandman', 'Guerrero nativo americano; compite por el bienestar de su pueblo.', 'Parte 7', NULL, NULL),
+(58, 'Pocoloco', 'Participante de la Steel Ball Run; despreocupado y extremadamente afortunado.', 'Parte 7', NULL, NULL),
+(59, 'Hot Pants', 'Ex-monja con pasado trágico; decidida y guiada por su redención.', 'Parte 7', NULL, NULL),
+(60, 'Yasuho Hirose', 'Joven inteligente y decidida; apoya a Josuke en la investigación.', 'Parte 8', NULL, NULL),
+(61, 'Joshu Higashikata', 'Miembro de la familia Higashikata; egoísta e inmaduro.', 'Parte 8', NULL, NULL),
+(62, 'Jobin Higashikata', 'Hijo mayor ambicioso; prioriza a su familia por encima de todo.', 'Parte 8', NULL, NULL),
+(63, 'Dragona Joestar', 'Miembro del grupo protagonista; carismático y seguro de sí mismo.', 'Parte 9', NULL, NULL),
+(64, 'Haccaa Howler', 'Figura del entorno criminal; vinculado a actividades ilegales.', 'Parte 9', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -170,7 +188,25 @@ INSERT INTO `stand` (`id`, `id_evolucion`, `nombre`, `descripcion`, `aparicion`,
 (53, NULL, 'Wonder of U', 'Stand automático que provoca calamidades inevitables contra quienes persiguen a su usuario.', 'Parte 8', 'https://static.jojowiki.com/images/2/24/latest/20210418202241/Wonder_of_U_Hybrid_Infobox_Manga.png', '', 'A', 'A', 'A', 'A', 'A', 'A'),
 (54, NULL, 'Killer Queen (Parte 8)', 'Versión alternativa de Killer Queen con capacidades explosivas adaptadas al universo de JoJolion.', 'Parte 8', 'https://static.jojowiki.com/images/1/16/latest/20260423070746/Killer_Queen_JJL_Infobox_Manga.png', '', 'A', 'B', 'D', 'A', 'B', 'A'),
 (55, NULL, 'November Rain', 'Stand capaz de generar lluvia extremadamente pesada para aplastar objetivos.', 'Parte 9', 'https://static.jojowiki.com/images/b/bf/latest/20231223005916/November_Rain_Infobox_Manga.png', '', 'B', 'C', 'B', 'A', 'B', 'A'),
-(56, NULL, 'Heavens Door (Parte 9)', 'Versión alternativa de Heaven s Door con habilidades relacionadas con manipulación de información y percepción.', 'Parte 9', 'https://static.jojowiki.com/images/c/c3/latest/20231219050605/Heaven%27s_Door_TJL_Infobox_Manga.png', '', 'C', 'B', 'B', 'B', 'A', 'B');
+(56, NULL, 'Heavens Door (Parte 9)', 'Versión alternativa de Heaven s Door con habilidades relacionadas con manipulación de información y percepción.', 'Parte 9', 'https://static.jojowiki.com/images/c/c3/latest/20231219050605/Heaven%27s_Door_TJL_Infobox_Manga.png', '', 'C', 'B', 'B', 'B', 'A', 'B'),                                                                                                                                                                                                                                                          
+(57, NULL, 'Bastet', 'Stand que magnetiza a los objetivos tras el contacto, atrayendo objetos metálicos.', 'Parte 3', NULL, '', 'E', 'C', 'D', 'E', 'E', 'E'),
+(58, NULL, 'Justice', 'Stand de niebla que controla cuerpos a través de heridas abiertas.', 'Parte 3', NULL, '', 'B', 'C', 'D', 'A', 'D', 'C'),
+(59, NULL, 'Harvest', 'Stand formado por múltiples unidades pequeñas que recolectan objetos y recursos.', 'Parte 4', NULL, '', 'C', 'B', 'A', 'C', 'B', 'C'),
+(60, NULL, 'Pearl Jam', 'Stand que cura el cuerpo mediante alimentos preparados especialmente.', 'Parte 4', NULL, '', 'E', 'E', 'A', 'C', 'A', 'C'),
+(61, NULL, 'Black Sabbath', 'Stand automático que emerge de las sombras y ataca mediante encendedores.', 'Parte 5', NULL, '', 'A', 'B', 'C', 'A', 'E', 'A'),
+(62, NULL, 'White Album', 'Stand que congela el entorno y protege al usuario con una armadura de hielo.', 'Parte 5', NULL, '', 'A', 'A', 'B', 'C', 'C', 'A'),
+(63, NULL, 'Green Day', 'Stand que libera moho letal al descender de altura.', 'Parte 5', NULL, '', 'A', 'C', 'A', 'A', 'E', 'A'),
+(64, NULL, 'Bohemian Rhapsody', 'Stand que da vida a personajes ficticios y los hace interactuar con la realidad.', 'Parte 6', NULL, '', 'E', 'E', 'A', 'A', 'E', 'A'),
+(65, NULL, 'Sky High', 'Stand que controla criaturas invisibles que drenan la energía vital.', 'Parte 6', NULL, '', 'C', 'B', 'C', 'B', 'B', 'C'),
+(66, NULL, 'Under World', 'Stand que recrea eventos pasados como fenómenos físicos inevitables.', 'Parte 6', NULL, '', 'C', 'C', 'B', 'A', 'B', 'B'),
+(67, NULL, 'In a Silent Way', 'Stand que materializa sonidos en formas físicas con efectos dañinos.', 'Parte 7', NULL, '', 'B', 'C', 'B', 'B', 'B', 'B'),
+(68, NULL, 'Hey Ya!', 'Stand que guía al usuario con consejos y aumenta su suerte.', 'Parte 7', NULL, '', 'E', 'E', 'A', 'E', 'E', 'E'),
+(69, NULL, 'Cream Starter', 'Stand que manipula carne para curar o atacar a otros.', 'Parte 7', NULL, '', 'B', 'C', 'A', 'B', 'B', 'C'),
+(70, NULL, 'Paisley Park', 'Stand que guía mediante información y rutas óptimas en el entorno.', 'Parte 8', NULL, '', 'E', 'E', 'A', 'A', 'A', 'A'),
+(71, NULL, 'Nut King Call', 'Stand que desmonta objetos en piezas unidas como tornillos.', 'Parte 8', NULL, '', 'C', 'B', 'C', 'C', 'B', 'C'),
+(72, NULL, 'Speed King', 'Stand que acumula y libera calor en objetos y superficies.', 'Parte 8', NULL, '', 'A', 'B', 'C', 'C', 'B', 'B'),
+(73, NULL, 'Smooth Operators', 'Stand formado por pequeñas unidades que manipulan objetos y posiciones.', 'Parte 9', NULL, '', 'C', 'B', 'B', 'B', 'A', 'B'),
+(74, NULL, 'Eclipse Eight', 'Stand que manipula fenómenos y energía de forma compleja y destructiva.', 'Parte 9', NULL, '', 'B', 'B', 'B', 'B', 'B', 'B');
 -- --------------------------------------------------------
 
 --
@@ -245,7 +281,25 @@ INSERT INTO `stand_portador` (`id_stand`, `id_portador`) VALUES
 (53, 42),
 (54, 43),
 (55, 44),
-(56, 45);
+(56, 45),
+(57, 47),
+(58, 48),
+(59, 49),
+(60, 50),
+(61, 51),
+(62, 52),
+(63, 53),
+(64, 54),
+(65, 55),
+(66, 56),
+(67, 57),
+(68, 58),
+(69, 59),
+(70, 60),
+(71, 61),
+(72, 62),
+(73, 63),
+(74, 64);
 
 --
 -- Índices para tablas volcadas
