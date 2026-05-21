@@ -242,19 +242,11 @@ function cargarDetallesStand(id) {
 
             infoWrapper.appendChild(titulo);
             infoWrapper.appendChild(desc);
-            infoWrapper.appendChild(aparicion);
-            infoWrapper.appendChild(portador);
-            infoWrapper.appendChild(evolucion);
-            infoWrapper.appendChild(statsGrid);
 
             if (stand.referencia_musical) {
                 const musicaDiv = document.createElement("div");
                 musicaDiv.style.marginTop = "20px";
-
-                const tituloMusica = document.createElement("h3");
-                tituloMusica.textContent = "Referencia Musical: " + stand.referencia_musical;
-                tituloMusica.style.marginBottom = "10px";
-                musicaDiv.appendChild(tituloMusica);
+                musicaDiv.style.marginBottom = "20px";
 
                 infoWrapper.appendChild(musicaDiv);
 
@@ -268,18 +260,68 @@ function cargarDetallesStand(id) {
                         if (datos.results.length > 0) {
                             let cancion = datos.results[0];
 
+                            // container para hacer un reproductor bonito
+                            const reproductorContenedor = document.createElement("div");
+                            reproductorContenedor.style.display = "flex";
+                            reproductorContenedor.style.alignItems = "center";
+                            reproductorContenedor.style.gap = "15px";
+                            reproductorContenedor.style.backgroundColor = "#2b0e3b";
+                            reproductorContenedor.style.border = "2px solid #ff4ecd";
+                            reproductorContenedor.style.borderRadius = "10px";
+                            reproductorContenedor.style.padding = "15px";
+                            reproductorContenedor.style.boxShadow = "0 0 10px rgba(255, 78, 205, 0.3)";
+
+                            // imagen del álbum
+                            if (cancion.artworkUrl100) {
+                                const imagenAlbum = document.createElement("img");
+                                // pedir una imagen de mayor resolución si es posible (cambiando 100x100 por 200x200)
+                                imagenAlbum.src = cancion.artworkUrl100.replace("100x100bb", "200x200bb");
+                                imagenAlbum.style.width = "80px";
+                                imagenAlbum.style.height = "80px";
+                                imagenAlbum.style.borderRadius = "8px";
+                                imagenAlbum.style.objectFit = "cover";
+                                imagenAlbum.style.border = "2px solid #00ffff";
+                                reproductorContenedor.appendChild(imagenAlbum);
+                            }
+
+                            // container para texto y audio
+                            const controlesMusica = document.createElement("div");
+                            controlesMusica.style.flex = "1";
+                            controlesMusica.style.display = "flex";
+                            controlesMusica.style.flexDirection = "column";
+                            controlesMusica.style.justifyContent = "center";
+
+                            const audioInfo = document.createElement("p");
+                            audioInfo.textContent = cancion.trackName + " - " + cancion.artistName;
+                            audioInfo.style.fontWeight = "bold";
+                            audioInfo.style.fontSize = "1.2rem";
+                            audioInfo.style.color = "#ffd700";
+                            audioInfo.style.margin = "0 0 8px 0";
+                            controlesMusica.appendChild(audioInfo);
+
                             let reproductor = document.createElement("audio");
                             reproductor.controls = true;
                             reproductor.src = cancion.previewUrl;
+                            reproductor.volume = 0.075; // vol por defecto 7.5% pq suena altisimo
                             reproductor.style.width = "100%";
+                            reproductor.style.height = "40px"; // un poco más fino
 
-                            musicaDiv.appendChild(reproductor);
+                            controlesMusica.appendChild(reproductor);
+                            reproductorContenedor.appendChild(controlesMusica);
+
+                            musicaDiv.appendChild(reproductorContenedor);
                         }
                     })
                     .catch(function (error) {
                         console.log("Error al cargar la música:", error);
                     });
             }
+
+            infoWrapper.appendChild(aparicion);
+            infoWrapper.appendChild(portador);
+            infoWrapper.appendChild(evolucion);
+
+            imgWrapper.appendChild(statsGrid);
 
             layoutDiv.appendChild(imgWrapper);
             layoutDiv.appendChild(infoWrapper);

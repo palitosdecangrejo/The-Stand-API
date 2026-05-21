@@ -229,7 +229,7 @@ main {
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 15px;
+    gap: 10px;
     margin-top: 20px;
 }
 
@@ -237,7 +237,7 @@ main {
     background-color: #2b0e3b;
     border: 3px solid #00ffff;
     border-radius: 10px;
-    padding: 15px;
+    padding: 10px;
     text-align: center;
     transition: transform 0.2s;
     aspect-ratio: 1 / 1;
@@ -255,15 +255,15 @@ main {
 .stat-box .stat-label {
     display: block;
     color: #ff4ecd;
-    font-size: 1.8rem;
+    font-size: 1.2rem;
     font-weight: bold;
-    margin-bottom: 8px;
+    margin-bottom: 5px;
 }
 
 .stat-box .stat-value {
     display: block;
     color: #ffd700;
-    font-size: 3.5rem;
+    font-size: 2.2rem;
     font-weight: bold;
 }
 
