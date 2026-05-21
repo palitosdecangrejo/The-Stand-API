@@ -195,6 +195,7 @@ main {
 .stand-detalles-layout {
     display: flex;
     gap: 30px;
+    position: relative;
 }
 
 .stand-imagen-wrapper {
@@ -221,7 +222,8 @@ main {
     margin-bottom: 15px;
 }
 
-.stand-info-wrapper .desc, .texto-normal {
+.stand-info-wrapper .desc,
+.texto-normal {
     font-size: 1.4rem;
     margin-bottom: 25px;
 }
@@ -384,7 +386,6 @@ footer p {
     }
 }
 
-/* INLINE */
 .header-logo-link {
     color: inherit;
     text-decoration: none;
@@ -487,6 +488,30 @@ footer p {
 .btn-borrar:hover {
     transform: scale(1.02);
     box-shadow: 0 0 15px #ff0055;
+}
+
+/* BOTÓN EDITAR */
+.btn-editar {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #00ffff, #0088ff);
+    color: #1a0524;
+    border: 2px solid #00ffff;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+    transition: 0.3s;
+    z-index: 10;
+}
+
+.btn-editar:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px #00ffff;
+    background: linear-gradient(135deg, #ffffff, #00ffff);
 }
 
 /* CLASES AUXILIARES */
@@ -666,4 +691,94 @@ footer p {
         opacity: 0;
         /* desaparece con fade */
     }
+}
+
+.enlace-interactivo {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.musica-container {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.reproductor-bonito {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background-color: #2b0e3b;
+    border: 2px solid #ff4ecd;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 0 10px rgba(255, 78, 205, 0.3);
+}
+
+.reproductor-bonito img {
+    width: 80px;
+    height: 80px;
+    border-radius: 8px;
+    object-fit: cover;
+    border: 2px solid #00ffff;
+}
+
+.controles-musica {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.audio-info {
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: #ffd700;
+    margin: 0 0 8px 0;
+}
+
+.reproductor-audio {
+    width: 100%;
+    height: 40px;
+}
+
+.form-edicion-ancho {
+    width: 100%;
+}
+
+.titulo-formulario {
+    color: #ff4ecd;
+    text-align: center;
+}
+
+.campos-grid-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.columna-completa {
+    grid-column: 1 / -1;
+}
+
+.mensaje-edicion-form {
+    text-align: center;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+.botones-formulario {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 30px;
+}
+
+.botones-formulario button {
+    width: 220px;
+    padding: 12px;
+    margin: 0;
+}
+
+.btn-sin-margen {
+    margin-top: 0;
 }

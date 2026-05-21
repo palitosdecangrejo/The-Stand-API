@@ -160,6 +160,34 @@ server.get("/buscar/portador", (req, res) => {
   });
 });
 
+// ENDPOINT PA ACTUALIZAR CON PUT
+server.put("/stand/:id", (req, res) => {
+  const id = req.params.id;
+  const { id_evolucion, nombre, descripcion, aparicion, imagen_manga, imagen_anime, poder, velocidad, alcance, durabilidad, precis, potencial, referencia_musical } = req.body;
+
+  const sql = `
+    UPDATE stand
+    SET id_evolucion = ?, nombre = ?, descripcion = ?, aparicion = ?, imagen_manga = ?, imagen_anime = ?, poder = ?, velocidad = ?, alcance = ?, durabilidad = ?, precis = ?, potencial = ?, referencia_musical = ?
+    WHERE id = ?
+  `;
+
+  pool_mysql.query(
+    sql,
+    [id_evolucion || null, nombre, descripcion, aparicion, imagen_manga, imagen_anime, poder, velocidad, alcance, durabilidad, precis, potencial, referencia_musical || null, id],
+    (error, resultados) => {
+      if (error) {
+        console.error("Error en UPDATE:", error);
+        return res.status(500).json({ error });
+      }
+
+      res.json({
+        mensaje: "Stand actualizado correctamente",
+        datos: { id, nombre }
+      });
+    }
+  );
+});
+
 // ENDPOINT PA BORRAR TEMPORAL
 server.delete("/stand/:id", (req, res) => {
   const id = req.params.id;

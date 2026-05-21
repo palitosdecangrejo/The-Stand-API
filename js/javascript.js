@@ -4,77 +4,83 @@ const ENDPOINT_BUSQUEDA = "http://localhost:3000/buscar/stand?q=";
 const ENDPOINT_STAND_PORTADOR_EVOLUCION = "http://localhost:3000/stand/portador/evolucion";
 const ENDPOINT_ITUNES = "https://itunes.apple.com/search?limit=1&entity=musicTrack&term=";
 
+// guardamos los stands por aqui pa filtrarlos luego si hace falta
 let todosLosStands = [];
 
+// funcion pa pillar todos los stands de la api de golpe
 function cargarStands() {
     fetch(ENDPOINT_STANDS)
         .then(res => res.json())
         .then(datos => {
-            todosLosStands = datos;
-            mostrarStands(datos);
+            todosLosStands = datos; // guardamos en la var global
+            mostrarStands(datos); // ponemos las cartitas
         })
-        .catch(error => console.error("Error al cargar los stands:", error));
+        .catch(error => console.error("error sacando los stands:", error));
 }
 
+// poner las cartas de los stands en el menu principal
 function mostrarStands(datos) {
     const principal = document.getElementById("principal-container");
 
-    // limpiar contenedor por si acaso de antes tiene algo
+    // limpiamos el container por si habia algo de antes, pq si no se duplican
     if (principal) {
         principal.innerHTML = '';
     } else {
-        console.error("No se encontró el contenedor principal");
+        console.error("no está el container principal");
         return;
     }
 
+    // recorrer los datos y crear una carta x stand
     datos.forEach(stand => {
 
-        // crear div carta con id para identificarlo
+        // crear div de la carta con su id y cursor pointer para que se vea clickeable
         const card = document.createElement("div");
         card.className = "card-stand";
         card.id = `card-stand-${stand.id}`;
-        card.style.cursor = 'pointer';
 
-        // crear imagen con la url de la manga
+        // pillamos la img del manga (o nada si no hay)
         const img = document.createElement("img");
         img.src = stand.imagen_manga || "";
-        img.alt = stand.nombre || "Imagen no disponible";
+        img.alt = stand.nombre || "img no disp";
 
         const titulo = document.createElement("h3");
         titulo.textContent = stand.nombre;
 
-        // añadir imagen y título a la carta
+        // metemos img y titulo en la carta
         card.appendChild(img);
         card.appendChild(titulo);
 
-        // click para ir a la página de detalles
+        // click pa ir a la pag de detalles
         card.addEventListener('click', () => {
+            // miramos si estamos en la raiz o en /pages/
             const isRoot = !window.location.pathname.includes('/pages/');
             window.location.href = isRoot ? `pages/stand.html?id=${stand.id}` : `stand.html?id=${stand.id}`;
         });
 
-        // añadir la carta al contenedor principal
+        // añadir la carta al dom al final
         principal.appendChild(card);
     });
 }
 
-
+// pilla los detalles de un stand y los pone en stand.html
 function cargarDetallesStand(id) {
     fetch(ENDPOINT_STAND_PORTADOR_EVOLUCION)
         .then(res => res.json())
         .then(datos => {
             const container = document.getElementById("stand-details-container");
-            if (!container) return;
+            if (!container) return; // si no hay container, vuelve
 
+            // buscamos el stand concreto por id
             const stand = datos.find(s => s.id == id);
 
             if (!stand) {
-                container.innerHTML = "<h2>Stand no encontrado</h2>";
+                container.innerHTML = "<h2>stand no encontrao bro</h2>";
                 return;
             }
 
-            container.innerHTML = '';
+            container.innerHTML = ''; // clear por si acaso
 
+            // maquetacion del layout de detalles
             const layoutDiv = document.createElement("div");
             layoutDiv.className = "stand-detalles-layout";
 
@@ -83,9 +89,9 @@ function cargarDetallesStand(id) {
 
             const img = document.createElement("img");
             img.src = stand.imagen_manga || stand.imagen_anime || "";
-            img.alt = stand.nombre || "Imagen no disponible";
+            img.alt = stand.nombre || "img no disp";
 
-            // alternar imagen
+            // botones pa alternar img entre manga y anime
             const divBotonesImg = document.createElement("div");
             divBotonesImg.className = "contenedor-botones-imagen";
 
@@ -101,7 +107,7 @@ function cargarDetallesStand(id) {
                 if (stand.imagen_anime) {
                     img.src = stand.imagen_anime;
                 } else {
-                    alert("No hay imagen de anime para este stand.");
+                    alert("No hay imágen de anime para este stand :(");
                 }
             };
 
@@ -111,21 +117,21 @@ function cargarDetallesStand(id) {
             imgWrapper.appendChild(divBotonesImg);
             imgWrapper.appendChild(img);
 
-            // botón borrar
+            // boton para borrar stand
             let btnBorrar = document.createElement("button");
-            btnBorrar.textContent = "Borrar Stand";
+            btnBorrar.textContent = "borrar stand";
             btnBorrar.className = "btn-borrar";
 
             btnBorrar.addEventListener("click", function () {
-
                 let urlBorrar = "http://localhost:3000/stand/" + stand.id;
 
                 fetch(urlBorrar, {
-                    method: "DELETE"
+                    method: "DELETE" // borrar
                 });
 
-                alert("Stand eliminado");
+                alert("Stand borrado");
 
+                // redirigimos al index porque ya no hay stand
                 if (window.location.pathname.includes("/pages/")) {
                     window.location.href = "../index.html";
                 } else {
@@ -147,7 +153,7 @@ function cargarDetallesStand(id) {
 
             const aparicion = document.createElement("p");
             aparicion.className = "desc";
-            aparicion.textContent = "Aparición: " + (stand.aparicion || "Desconocida");
+            aparicion.textContent = "Aparición: " + (stand.aparicion || "No disponible.");
 
             // portadores
             const portador = document.createElement("p");
@@ -155,67 +161,64 @@ function cargarDetallesStand(id) {
             portador.textContent = "Portador/es: ";
 
             if (stand.portadores) {
-
+                // si hay, separamos por coma y espacio
                 let listaPortadores = stand.portadores.split(", ");
 
                 listaPortadores.forEach(function (item, index) {
-
+                    // formato "id:nombre"
                     let partesPortador = item.split(":");
 
                     let idPortador = partesPortador[0];
                     let nombrePortador = partesPortador[1];
 
                     let enlace = document.createElement("span");
-
                     enlace.textContent = nombrePortador;
-                    enlace.style.cursor = "pointer";
-                    enlace.style.textDecoration = "underline";
+                    enlace.className = "enlace-interactivo";
 
                     enlace.addEventListener("click", function () {
+                        // click para cargar los detalles
                         cargarDetallesPortador(idPortador);
                     });
 
                     portador.appendChild(enlace);
 
+                    // poner coma si no es el ultimo
                     if (index < listaPortadores.length - 1) {
                         portador.appendChild(document.createTextNode(", "));
                     }
                 });
 
             } else {
-
-                portador.appendChild(document.createTextNode("Sin portador"));
+                portador.appendChild(document.createTextNode("No hay portador."));
             }
 
-            // evolución
+            // evolucion
             const evolucion = document.createElement("p");
             evolucion.className = "desc";
-            evolucion.textContent = "Evolución: ";
+            evolucion.textContent = "evolución: ";
 
             if (stand.evolucion) {
-
                 let enlaceEvolucion = document.createElement("span");
 
                 enlaceEvolucion.textContent = stand.evolucion;
-                enlaceEvolucion.style.cursor = "pointer";
-                enlaceEvolucion.style.textDecoration = "underline";
+                enlaceEvolucion.className = "enlace-interactivo";
 
                 enlaceEvolucion.addEventListener("click", function () {
+                    // click y pillas los dtlls del stand evo
                     cargarDetallesStand(stand.id_evolucion_real);
                 });
 
                 evolucion.appendChild(enlaceEvolucion);
-
             } else {
-
-                evolucion.appendChild(document.createTextNode("Sin evolución"));
+                evolucion.appendChild(document.createTextNode("No tiene evolución."));
             }
 
+            // stats grid
             const statsGrid = document.createElement("div");
             statsGrid.className = "stats-grid";
 
+            // crear caja de stats
             const crearStatBox = (etiqueta, valor) => {
-
                 const box = document.createElement("div");
                 box.className = "stat-box";
 
@@ -233,6 +236,7 @@ function cargarDetallesStand(id) {
                 return box;
             };
 
+            // ponemos las stats
             statsGrid.appendChild(crearStatBox("Poder", stand.poder));
             statsGrid.appendChild(crearStatBox("Velocidad", stand.velocidad));
             statsGrid.appendChild(crearStatBox("Alcance", stand.alcance));
@@ -243,68 +247,47 @@ function cargarDetallesStand(id) {
             infoWrapper.appendChild(titulo);
             infoWrapper.appendChild(desc);
 
+            // si hay referencia musical en la base de datos, la buscamos en la API
             if (stand.referencia_musical) {
                 const musicaDiv = document.createElement("div");
-                musicaDiv.style.marginTop = "20px";
-                musicaDiv.style.marginBottom = "20px";
+                musicaDiv.className = "musica-container";
 
                 infoWrapper.appendChild(musicaDiv);
 
                 let urlBusqueda = ENDPOINT_ITUNES + stand.referencia_musical;
 
+                // fetch de la API
                 fetch(urlBusqueda)
-                    .then(function (respuesta) {
-                        return respuesta.json();
-                    })
+                    .then(function (respuesta) { return respuesta.json(); })
                     .then(function (datos) {
                         if (datos.results.length > 0) {
                             let cancion = datos.results[0];
 
-                            // container para hacer un reproductor bonito
+                            // container para que se vea bonito
                             const reproductorContenedor = document.createElement("div");
-                            reproductorContenedor.style.display = "flex";
-                            reproductorContenedor.style.alignItems = "center";
-                            reproductorContenedor.style.gap = "15px";
-                            reproductorContenedor.style.backgroundColor = "#2b0e3b";
-                            reproductorContenedor.style.border = "2px solid #ff4ecd";
-                            reproductorContenedor.style.borderRadius = "10px";
-                            reproductorContenedor.style.padding = "15px";
-                            reproductorContenedor.style.boxShadow = "0 0 10px rgba(255, 78, 205, 0.3)";
+                            reproductorContenedor.className = "reproductor-bonito";
 
-                            // imagen del álbum
+                            // ponemos la foto del disco
                             if (cancion.artworkUrl100) {
                                 const imagenAlbum = document.createElement("img");
-                                // pedir una imagen de mayor resolución si es posible (cambiando 100x100 por 200x200)
                                 imagenAlbum.src = cancion.artworkUrl100.replace("100x100bb", "200x200bb");
-                                imagenAlbum.style.width = "80px";
-                                imagenAlbum.style.height = "80px";
-                                imagenAlbum.style.borderRadius = "8px";
-                                imagenAlbum.style.objectFit = "cover";
-                                imagenAlbum.style.border = "2px solid #00ffff";
                                 reproductorContenedor.appendChild(imagenAlbum);
                             }
 
-                            // container para texto y audio
+                            // container para el audio y el texto
                             const controlesMusica = document.createElement("div");
-                            controlesMusica.style.flex = "1";
-                            controlesMusica.style.display = "flex";
-                            controlesMusica.style.flexDirection = "column";
-                            controlesMusica.style.justifyContent = "center";
+                            controlesMusica.className = "controles-musica";
 
                             const audioInfo = document.createElement("p");
                             audioInfo.textContent = cancion.trackName + " - " + cancion.artistName;
-                            audioInfo.style.fontWeight = "bold";
-                            audioInfo.style.fontSize = "1.2rem";
-                            audioInfo.style.color = "#ffd700";
-                            audioInfo.style.margin = "0 0 8px 0";
+                            audioInfo.className = "audio-info";
                             controlesMusica.appendChild(audioInfo);
 
                             let reproductor = document.createElement("audio");
                             reproductor.controls = true;
                             reproductor.src = cancion.previewUrl;
-                            reproductor.volume = 0.075; // vol por defecto 7.5% pq suena altisimo
-                            reproductor.style.width = "100%";
-                            reproductor.style.height = "40px"; // un poco más fino
+                            reproductor.volume = 0.075; // 7.5 de volumen pq suena muy alto, modificar luego si eso
+                            reproductor.className = "reproductor-audio";
 
                             controlesMusica.appendChild(reproductor);
                             reproductorContenedor.appendChild(controlesMusica);
@@ -313,7 +296,7 @@ function cargarDetallesStand(id) {
                         }
                     })
                     .catch(function (error) {
-                        console.log("Error al cargar la música:", error);
+                        console.log("Error cargando música:", error);
                     });
             }
 
@@ -326,38 +309,43 @@ function cargarDetallesStand(id) {
             layoutDiv.appendChild(imgWrapper);
             layoutDiv.appendChild(infoWrapper);
 
+            // boton de editar
+            let btnEditar = document.createElement("button");
+            btnEditar.textContent = "Editar";
+            btnEditar.className = "btn-editar";
+            btnEditar.addEventListener("click", function () {
+                mostrarFormularioEdicion(stand, layoutDiv, id);
+            });
+            layoutDiv.appendChild(btnEditar);
+
             container.appendChild(layoutDiv);
         })
-
         .catch(error => {
-
-            console.error("Error al cargar detalles del stand:", error);
-
+            console.error("Error cargando detalles del stand:", error);
             const container = document.getElementById("stand-details-container");
-
             if (container) {
-                container.innerHTML = "<h2>Error al cargar la información del stand</h2>";
+                container.innerHTML = "<h2>Error cargando la info del stand</h2>";
             }
         });
 }
 
+// cargar los detalles del portador (lo mismo que los stands)
 function cargarDetallesPortador(id) {
     fetch(ENDPOINT_PORTADORES)
         .then(res => res.json())
         .then(datos => {
-
             const container = document.getElementById("stand-details-container");
-
             if (!container) return;
 
+            // pilla al portador por id
             const portador = datos.find(p => p.id == id);
 
             if (!portador) {
-                container.innerHTML = "<h2>Portador no encontrado</h2>";
+                container.innerHTML = "<h2>portador no encontrado</h2>";
                 return;
             }
 
-            container.innerHTML = '';
+            container.innerHTML = ''; // clear de nuevo
 
             const layoutDiv = document.createElement("div");
             layoutDiv.className = "stand-detalles-layout";
@@ -367,16 +355,15 @@ function cargarDetallesPortador(id) {
 
             const img = document.createElement("img");
             img.src = portador.imagen_manga || portador.imagen_anime || "";
-            img.alt = portador.nombre || "Imagen no disponible";
+            img.alt = portador.nombre || "img no disp";
 
-            // alternar imagen
+            // botones pa cambiar la img del portador
             const divBotonesImg = document.createElement("div");
             divBotonesImg.className = "contenedor-botones-imagen";
 
             const btnManga = document.createElement("button");
             btnManga.textContent = "Manga";
             btnManga.className = "btn-alternar-imagen";
-
             btnManga.onclick = () => {
                 img.src = portador.imagen_manga || "";
             };
@@ -384,16 +371,11 @@ function cargarDetallesPortador(id) {
             const btnAnime = document.createElement("button");
             btnAnime.textContent = "Anime";
             btnAnime.className = "btn-alternar-imagen";
-
             btnAnime.onclick = () => {
-
                 if (portador.imagen_anime) {
-
                     img.src = portador.imagen_anime;
-
                 } else {
-
-                    alert("No hay imagen de anime para este portador.");
+                    alert("no hay img de anime pa este bro.");
                 }
             };
 
@@ -411,11 +393,11 @@ function cargarDetallesPortador(id) {
 
             const desc = document.createElement("p");
             desc.className = "desc";
-            desc.textContent = portador.descripcion || "Descripción no disponible.";
+            desc.textContent = portador.descripcion || "desc no disponible bro.";
 
             const aparicion = document.createElement("p");
             aparicion.className = "desc";
-            aparicion.textContent = "Aparición: " + (portador.aparicion || "Desconocida");
+            aparicion.textContent = "aparición: " + (portador.aparicion || "ni idea");
 
             infoWrapper.appendChild(titulo);
             infoWrapper.appendChild(desc);
@@ -424,42 +406,187 @@ function cargarDetallesPortador(id) {
             layoutDiv.appendChild(imgWrapper);
             layoutDiv.appendChild(infoWrapper);
 
+            // lo añadimos to y au
             container.appendChild(layoutDiv);
-
         })
-
         .catch(error => {
-
             console.error("Error al cargar detalles del portador:", error);
-
             const container = document.getElementById("stand-details-container");
-
             if (container) {
-
-                container.innerHTML = "<h2>Error al cargar la información del portador</h2>";
+                container.innerHTML = "<h2>Error al cargar la info del portador</h2>";
             }
         });
 }
 
+// form de edicion
+function mostrarFormularioEdicion(stand, container, id) {
+    container.innerHTML = '';
+
+    const form = document.createElement('form');
+    form.className = 'form-container form-edicion-ancho';
+
+    const tituloForm = document.createElement('h2');
+    tituloForm.textContent = 'Editar stand';
+    tituloForm.className = 'titulo-formulario';
+    form.appendChild(tituloForm);
+
+    const camposGrid = document.createElement('div');
+    camposGrid.className = 'campos-grid-form';
+
+    // campos pa editar
+    camposGrid.innerHTML = `
+        <div class="form-group columna-completa">
+            <label>Descripción</label>
+            <textarea name="descripcion" rows="4">${stand.descripcion || ''}</textarea>
+        </div>
+        
+        <div class="form-group">
+            <label>Nombre</label>
+            <input type="text" name="nombre" value="${stand.nombre || ''}">
+        </div>
+        
+        <div class="form-group">
+            <label>Aparición</label>
+            <input type="text" name="aparicion" value="${stand.aparicion || ''}">
+        </div>
+        
+        <div class="form-group">
+            <label>URL imágen manga</label>
+            <input type="text" name="imagen_manga" value="${stand.imagen_manga || ''}">
+        </div>
+        
+        <div class="form-group">
+            <label>URL imágen anime</label>
+            <input type="text" name="imagen_anime" value="${stand.imagen_anime || ''}">
+        </div>
+        
+        <div class="form-group">
+            <label>Referencia musical</label>
+            <input type="text" name="referencia_musical" value="${stand.referencia_musical || ''}">
+        </div>
+        
+        <div class="form-group">
+            <label>ID Evolución</label>
+            <input type="number" name="id_evolucion" value="${stand.id_evolucion_real || ''}">
+        </div>
+
+        <div class="columna-completa">
+            <h3 class="titulo-estadisticas">Estadísticas</h3>
+            <div class="stats-grid-form">
+                <div class="form-group">
+                    <label>Poder</label>
+                    <input type="text" name="poder" value="${stand.poder || ''}">
+                </div>
+                <div class="form-group">
+                    <label>Velocidad</label>
+                    <input type="text" name="velocidad" value="${stand.velocidad || ''}">
+                </div>
+                <div class="form-group">
+                    <label>Alcance</label>
+                    <input type="text" name="alcance" value="${stand.alcance || ''}">
+                </div>
+                <div class="form-group">
+                    <label>Durabilidad</label>
+                    <input type="text" name="durabilidad" value="${stand.durabilidad || ''}">
+                </div>
+                <div class="form-group">
+                    <label>Precisión</label>
+                    <input type="text" name="precis" value="${stand.precis || ''}">
+                </div>
+                <div class="form-group">
+                    <label>Potencial</label>
+                    <input type="text" name="potencial" value="${stand.potencial || ''}">
+                </div>
+            </div>
+        </div>
+    `;
+
+    form.appendChild(camposGrid);
+
+    // div pa los msg de error o exito
+    const divMensaje = document.createElement('div');
+    divMensaje.id = 'mensaje-edicion';
+    divMensaje.className = 'mensaje-edicion-form';
+    form.appendChild(divMensaje);
+
+    const btnBotones = document.createElement('div');
+    btnBotones.className = 'botones-formulario';
+
+    const btnGuardar = document.createElement('button');
+    btnGuardar.type = 'submit';
+    btnGuardar.className = 'btn-submit';
+    btnGuardar.textContent = 'guardar cambios';
+    btnBotones.appendChild(btnGuardar);
+
+    const btnCancelar = document.createElement('button');
+    btnCancelar.type = 'button';
+    btnCancelar.className = 'btn-borrar btn-sin-margen';
+    btnCancelar.textContent = 'cancelar';
+    btnCancelar.onclick = () => cargarDetallesStand(id);
+    btnBotones.appendChild(btnCancelar);
+
+    form.appendChild(btnBotones);
+
+    // al hacer submit
+    form.onsubmit = function (e) {
+        e.preventDefault();
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+
+        // si la evo ta vacia la pasamos a null
+        if (!data.id_evolucion || data.id_evolucion.trim() === "") {
+            data.id_evolucion = null;
+        }
+
+        // fetch PUT pa actualizar
+        fetch(`http://localhost:3000/stand/${id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        })
+            .then(res => res.json())
+            .then(result => {
+                if (result.error) throw new Error(result.error.sqlMessage || "Error al editar el stand");
+                divMensaje.textContent = "Stand guardado!";
+                divMensaje.className = "mensaje-exito";
+                setTimeout(() => {
+                    cargarDetallesStand(id); // recargamos pa ver los cambios
+                }, 1000);
+            })
+            .catch(error => {
+                console.error("Error editando el stand:", error);
+                divMensaje.textContent = "Error editando el stand.";
+                divMensaje.className = "mensaje-error";
+            });
+    };
+
+    container.appendChild(form);
+}
+
+// barra de busqueda
 function activarBarraBusqueda() {
     const inputBusqueda = document.getElementById("input-busqueda");
     const resultadosBusqueda = document.getElementById("resultados-busqueda");
 
     if (inputBusqueda) {
+        // busca cada vez q escribes
         inputBusqueda.addEventListener("input", function () {
             let texto = inputBusqueda.value.trim();
 
             if (texto.length > 0) {
-                buscarContenido(texto);
+                buscarContenido(texto); // busca el txt
             } else {
                 if (resultadosBusqueda) {
                     resultadosBusqueda.innerHTML = "";
-                    resultadosBusqueda.classList.add("oculto");
+                    resultadosBusqueda.classList.add("oculto"); // lo esconde si esta vacio
                 }
             }
         });
     }
 
+    // esconder resultados si clicas fuera
     document.addEventListener("click", function (evento) {
         let cajaBusqueda = document.querySelector(".cuadro-busqueda");
 
@@ -471,25 +598,26 @@ function activarBarraBusqueda() {
     });
 }
 
+// busqueda
 function buscarContenido(texto) {
     fetch("http://localhost:3000/buscar/stand?q=" + encodeURIComponent(texto))
-        .then(function (respuesta) {
-            return respuesta.json();
-        })
+        .then(function (respuesta) { return respuesta.json(); })
         .then(function (datos) {
             mostrarResultadosBusqueda(datos);
         })
         .catch(function (error) {
-            console.log("Error en la búsqueda:", error);
+            console.log("peto en la busqueda bro:", error);
         });
 }
 
+// ponemos lo q devuelve la busqueda
 function mostrarResultadosBusqueda(resultados) {
     const resultadosBusqueda = document.getElementById("resultados-busqueda");
     if (!resultadosBusqueda) return;
 
     resultadosBusqueda.innerHTML = "";
 
+    // cortamos a 5 resultados pa q no pete visualmente
     let resultadosValidos = resultados.slice(0, 5);
 
     if (resultadosValidos.length) {
@@ -498,12 +626,13 @@ function mostrarResultadosBusqueda(resultados) {
         resultadosBusqueda.classList.add("oculto");
     }
 
+    // ponemos los divs
     resultadosValidos.forEach(function (stand) {
         let div = document.createElement("div");
         div.classList.add("resultado-item");
-
         div.textContent = stand.nombre;
 
+        // click pa ir al stand
         div.addEventListener("click", function () {
             const isRoot = !window.location.pathname.includes("/pages/");
             window.location.href = isRoot
@@ -515,37 +644,39 @@ function mostrarResultadosBusqueda(resultados) {
     });
 }
 
+// cuando cargue todo el dom metemos los event listeners
 document.addEventListener("DOMContentLoaded", () => {
 
     const urlParams = new URLSearchParams(window.location.search);
     const standId = urlParams.get('id');
 
     if (standId) {
-        // si estamos en stand.html y hay un ID
+        // si estamos en stand.html y pasamos id en la url, cargamos el stand
         cargarDetallesStand(standId);
     } else {
-        // si estamos en index.html cargar todos los stands
+        // si estamos en index.html cargamos todos los stands
         const principal = document.getElementById("principal-container");
         if (principal) {
             cargarStands();
         }
     }
 
-    // LÓGICA DE FILTROS POR PARTE
+    // LOGICA DE FILTROS POR PARTE
     const botonesFiltro = document.querySelectorAll(".btn-filtro-parte");
     if (botonesFiltro.length > 0) {
         botonesFiltro.forEach(boton => {
             boton.addEventListener("click", function () {
-                // quitar clase activo a todos
+                // quitamos la clase activo a los demas botones
                 botonesFiltro.forEach(b => b.classList.remove("activo"));
-                // poner clase activo al clickeado
+                // y se la enchufamos al q acabamos de clicar
                 this.classList.add("activo");
 
                 const parte = this.getAttribute("data-parte");
 
                 if (parte === "todas") {
-                    mostrarStands(todosLosStands);
+                    mostrarStands(todosLosStands); // mostramos todo
                 } else {
+                    // filtramos los q tengan ese num de parte
                     const standsFiltrados = todosLosStands.filter(stand =>
                         stand.aparicion && stand.aparicion.includes(parte)
                     );
@@ -557,15 +688,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
     activarBarraBusqueda();
 
+    // boton stand random
     const btnRandom = document.getElementById("btn-random");
-
     if (btnRandom) {
         btnRandom.addEventListener("click", function () {
 
+            // sonido
             const audioFlecha = document.getElementById("audio-flecha-stand");
             audioFlecha.play();
 
-            // ANIMACION
+            // animacion de la flecha
             const overlay = document.getElementById("animacion-overlay");
             const brillo = document.querySelector(".pantalla-brillo");
             const flecha = document.getElementById("flecha-animacion");
@@ -579,6 +711,7 @@ document.addEventListener("DOMContentLoaded", () => {
             fetch(ENDPOINT_STANDS)
                 .then(res => res.json())
                 .then(datos => {
+                    // pillamos uno al azar del array
                     let indice = Math.floor(Math.random() * datos.length);
                     let standRandom = datos[indice];
                     const isRoot = !window.location.pathname.includes("/pages/");
@@ -586,7 +719,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         ? "pages/stand.html?id=" + standRandom.id
                         : "stand.html?id=" + standRandom.id;
 
-                    // esperamos a que acabe la animación antes de redirigir
+                    // esperamos a q acabe la animacion (4.5s) antes de ir a la pag
                     if (overlay) {
                         setTimeout(() => {
                             window.location.href = urlDestino;
@@ -596,18 +729,19 @@ document.addEventListener("DOMContentLoaded", () => {
                     }
                 })
                 .catch(error => {
-                    console.log("Error al cargar stand random:", error);
+                    console.log("peto al cargar stand random:", error);
                 });
         });
     }
 
-    // LÓGICA DE INSERCIÓN DE STANDS
+    // LOGICA PA METER STANDS NUEVOS
     const formInsertarStand = document.getElementById("form-insertar-stand");
     const inputBuscarPortador = document.getElementById("buscar-portador");
     const resultadosPortador = document.getElementById("resultados-portador");
     const idPortadorInput = document.getElementById("id_portador");
 
     if (inputBuscarPortador) {
+        // busca mientras escribes
         inputBuscarPortador.addEventListener("input", function () {
             let texto = inputBuscarPortador.value.trim();
             if (texto.length > 0) {
@@ -615,7 +749,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     .then(res => res.json())
                     .then(datos => {
                         resultadosPortador.innerHTML = "";
-                        let limitados = datos.slice(0, 5);
+                        let limitados = datos.slice(0, 5); // solo 5 max
                         if (limitados.length) {
                             resultadosPortador.classList.remove("oculto");
                         } else {
@@ -627,6 +761,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             div.className = "resultado-portador-item";
                             div.textContent = portador.nombre;
 
+                            // al hacer clic en un portador, lo seleccionamos
                             div.addEventListener("click", function () {
                                 inputBuscarPortador.value = portador.nombre;
                                 idPortadorInput.value = portador.id;
@@ -636,13 +771,13 @@ document.addEventListener("DOMContentLoaded", () => {
                             resultadosPortador.appendChild(div);
                         });
                     })
-                    .catch(error => console.error("Error al buscar portador:", error));
+                    .catch(error => console.error("error buscando al portador bro:", error));
             } else {
                 resultadosPortador.classList.add("oculto");
             }
         });
 
-        // cerrar si se hace click fuera
+        // si clicas fuera, cerramos el menu ese
         document.addEventListener("click", function (e) {
             if (!inputBuscarPortador.contains(e.target) && !resultadosPortador.contains(e.target)) {
                 resultadosPortador.classList.add("oculto");
@@ -654,26 +789,26 @@ document.addEventListener("DOMContentLoaded", () => {
         formInsertarStand.addEventListener("submit", function (e) {
             e.preventDefault();
 
-            // coger valores del formulario
+            // pillamos los datos del user
             const formData = new FormData(formInsertarStand);
             const data = Object.fromEntries(formData.entries());
 
-            // si no hay evo, mandarlo como null
+            // si no puso evo, a null
             if (!data.id_evolucion || data.id_evolucion.trim() === "") {
                 data.id_evolucion = null;
             }
 
-            // si no hay portador, eliminarlo
+            // si no puso portador, lo quitamos del obj pa q no pete
             if (!data.id_portador || data.id_portador.trim() === "") {
                 delete data.id_portador;
             }
 
-            // si no hay referencia musical, mandarlo como null
+            // ref musical a null si no hay
             if (!data.referencia_musical || data.referencia_musical.trim() === "") {
                 data.referencia_musical = null;
             }
 
-            // hacer la petición POST
+            // metemos el stand a la db con un POST
             fetch(ENDPOINT_STANDS, {
                 method: "POST",
                 headers: {
@@ -683,27 +818,27 @@ document.addEventListener("DOMContentLoaded", () => {
             })
                 .then(response => {
                     if (!response.ok) {
-                        throw new Error("Error en la inserción");
+                        throw new Error("error fatal al insertar bro");
                     }
                     return response.json();
                 })
                 .then(result => {
                     const mensajeDiv = document.getElementById("mensaje-resultado");
                     mensajeDiv.className = "mensaje-exito";
-                    mensajeDiv.textContent = result.mensaje || "Stand insertado correctamente.";
-                    formInsertarStand.reset(); // limpiar el formulario
+                    mensajeDiv.textContent = result.mensaje || "Stand insertado.";
+                    formInsertarStand.reset(); // limpiamos el form
 
-                    // quitar el mensaje después de 3 segundos
+                    // quitamos el txt en 3 seg pa q no moleste
                     setTimeout(() => {
                         mensajeDiv.textContent = "";
                         mensajeDiv.className = "";
                     }, 3000);
                 })
                 .catch(error => {
-                    console.error("Error al insertar el stand:", error);
+                    console.error("Error al meter el stand:", error);
                     const mensajeDiv = document.getElementById("mensaje-resultado");
                     mensajeDiv.className = "mensaje-error";
-                    mensajeDiv.textContent = "Error al intentar insertar el stand.";
+                    mensajeDiv.textContent = "Error intentando meter el stand en la bd.";
                 });
         });
     }
