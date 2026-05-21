@@ -7,7 +7,7 @@ const ENDPOINT_ITUNES = "https://itunes.apple.com/search?limit=1&entity=musicTra
 // guardamos los stands por aqui pa filtrarlos luego si hace falta
 let todosLosStands = [];
 
-// funcion pa pillar todos los stands de la api de golpe
+// funcion pa pillar todos los stands de la api de golpe (A)
 function cargarStands() {
     fetch(ENDPOINT_STANDS)
         .then(res => res.json())
@@ -18,7 +18,7 @@ function cargarStands() {
         .catch(error => console.error("error sacando los stands:", error));
 }
 
-// poner las cartas de los stands en el menu principal
+// poner las cartas de los stands en el menu principal (A)
 function mostrarStands(datos) {
     const principal = document.getElementById("principal-container");
 
@@ -62,7 +62,7 @@ function mostrarStands(datos) {
     });
 }
 
-// pilla los detalles de un stand y los pone en stand.html
+// pilla los detalles de un stand y los pone en stand.html (H)
 function cargarDetallesStand(id) {
     fetch(ENDPOINT_STAND_PORTADOR_EVOLUCION)
         .then(res => res.json())
@@ -329,7 +329,7 @@ function cargarDetallesStand(id) {
         });
 }
 
-// cargar los detalles del portador (lo mismo que los stands)
+// cargar los detalles del portador (lo mismo que los stands) (H)
 function cargarDetallesPortador(id) {
     fetch(ENDPOINT_PORTADORES)
         .then(res => res.json())
@@ -418,7 +418,7 @@ function cargarDetallesPortador(id) {
         });
 }
 
-// form de edicion
+// form de edicion (A)
 function mostrarFormularioEdicion(stand, container, id) {
     container.innerHTML = '';
 
@@ -565,7 +565,7 @@ function mostrarFormularioEdicion(stand, container, id) {
     container.appendChild(form);
 }
 
-// barra de busqueda
+// barra de busqueda (H)
 function activarBarraBusqueda() {
     const inputBusqueda = document.getElementById("input-busqueda");
     const resultadosBusqueda = document.getElementById("resultados-busqueda");
@@ -598,9 +598,9 @@ function activarBarraBusqueda() {
     });
 }
 
-// busqueda
+// busqueda (H)
 function buscarContenido(texto) {
-    fetch("http://localhost:3000/buscar/stand?q=" + encodeURIComponent(texto))
+    fetch(ENDPOINT_BUSQUEDA + encodeURIComponent(texto))
         .then(function (respuesta) { return respuesta.json(); })
         .then(function (datos) {
             mostrarResultadosBusqueda(datos);
@@ -610,7 +610,7 @@ function buscarContenido(texto) {
         });
 }
 
-// ponemos lo q devuelve la busqueda
+// ponemos lo q devuelve la busqueda (H)
 function mostrarResultadosBusqueda(resultados) {
     const resultadosBusqueda = document.getElementById("resultados-busqueda");
     if (!resultadosBusqueda) return;
@@ -688,7 +688,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     activarBarraBusqueda();
 
-    // boton stand random
+    // boton stand random (H: Funcionalidad, A: Animación)
     const btnRandom = document.getElementById("btn-random");
     if (btnRandom) {
         btnRandom.addEventListener("click", function () {
@@ -740,6 +740,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const resultadosPortador = document.getElementById("resultados-portador");
     const idPortadorInput = document.getElementById("id_portador");
 
+    //(A)
     if (inputBuscarPortador) {
         // busca mientras escribes
         inputBuscarPortador.addEventListener("input", function () {
@@ -785,6 +786,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    //(A)
     if (formInsertarStand) {
         formInsertarStand.addEventListener("submit", function (e) {
             e.preventDefault();
