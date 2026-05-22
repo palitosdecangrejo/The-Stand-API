@@ -20,6 +20,11 @@ const pool_mysql = mysql.createPool({
   queueLimit: 0,
 });
 
+/**
+ * @brief Inicia el servidor y conecta a la BD.
+ * @details Conecta al pool de mysql y si va bien arranca el server en el puerto 3000.
+ * @return {void}
+ */
 function iniciarServidor() {
   pool_mysql.getConnection((error, connection) => {
     if (error) {
@@ -37,7 +42,6 @@ function iniciarServidor() {
 
 iniciarServidor();
 
-//(A)
 server.get("/stand", (req, res) => {
   const nombre = req.query.nombre;
   const evo = req.query.id_evolucion;
@@ -59,7 +63,6 @@ server.get("/stand", (req, res) => {
   });
 });
 
-//(A)
 server.get("/portador", (req, res) => {
   const nombre = req.query.nombre;
   let valores = [];
@@ -80,7 +83,6 @@ server.get("/portador", (req, res) => {
   });
 });
 
-//(A)
 server.post("/stand", (req, res) => {
   const { id_evolucion, nombre, descripcion, aparicion, imagen_manga, imagen_anime, poder, velocidad, alcance, durabilidad, precis, potencial, id_portador, referencia_musical } = req.body;
 
@@ -118,7 +120,6 @@ server.post("/stand", (req, res) => {
   );
 });
 
-//(H)
 server.get("/buscar/stand", (req, res) => {
   const texto = req.query.q;
 
@@ -140,7 +141,6 @@ server.get("/buscar/stand", (req, res) => {
   });
 });
 
-//(A)
 server.get("/buscar/portador", (req, res) => {
   const texto = req.query.q;
 
@@ -162,7 +162,6 @@ server.get("/buscar/portador", (req, res) => {
   });
 });
 
-// ENDPOINT PA ACTUALIZAR CON PUT (A)
 server.put("/stand/:id", (req, res) => {
   const id = req.params.id;
   const { id_evolucion, nombre, descripcion, aparicion, imagen_manga, imagen_anime, poder, velocidad, alcance, durabilidad, precis, potencial, referencia_musical } = req.body;
@@ -190,7 +189,7 @@ server.put("/stand/:id", (req, res) => {
   );
 });
 
-// ENDPOINT PA BORRAR TEMPORAL
+// TEST DEL
 server.delete("/stand/:id", (req, res) => {
   const id = req.params.id;
 
@@ -216,7 +215,6 @@ server.delete("/stand/:id", (req, res) => {
   });
 });
 
-//(H)
 server.get("/stand/portador/evolucion", (req, res) => {
 
   const sql = `
@@ -253,4 +251,3 @@ server.get("/stand/portador/evolucion", (req, res) => {
 
 });
 
-// TEST
