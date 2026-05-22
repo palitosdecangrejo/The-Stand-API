@@ -151,7 +151,7 @@ function cargarDetallesStand(id) {
                             return res.json();
                         })
                         .then(function () {
-                            alert("Stand borrado pa siempre");
+                            alert("Stand borrado");
 
                             // redirigimos al index porque ya no hay stand
                             if (window.location.pathname.includes("/pages/")) {
@@ -161,7 +161,7 @@ function cargarDetallesStand(id) {
                             }
                         })
                         .catch(function (error) {
-                            console.error("error borrando el stand:", error);
+                            console.error("Error borrando el stand:", error);
                         });
                 });
 
