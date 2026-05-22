@@ -39,7 +39,6 @@ header p {
 }
 
 /* NAV */
-/* NAV GLOBAL */
 nav {
     background-color: #1a0524;
     min-height: 60px;
@@ -610,7 +609,6 @@ footer p {
     width: 100%;
     height: 100%;
     background-color: #ffd700;
-    /* brillo doradito */
     opacity: 0;
 }
 
@@ -687,9 +685,9 @@ footer p {
     }
 
     100% {
+        /* desaparece con fade */
         transform: translateY(400px) rotate(225deg) scale(2);
         opacity: 0;
-        /* desaparece con fade */
     }
 }
 

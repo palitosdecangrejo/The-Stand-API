@@ -89,35 +89,32 @@ server.post("/stand", (req, res) => {
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `;
 
-  pool_mysql.query(
-    sql,
-    [id_evolucion, nombre, descripcion, aparicion, imagen_manga, imagen_anime, poder, velocidad, alcance, durabilidad, precis, potencial, referencia_musical],
-    (error, resultados) => {
-      if (error) {
-        console.error("Error en INSERT:", error);
-        return res.status(500).json({ error });
-      }
-
-      const idStandInsertado = resultados.insertId;
-
-      if (id_portador) {
-        const sqlPortador = "INSERT INTO stand_portador (id_stand, id_portador) VALUES (?, ?)";
-        pool_mysql.query(sqlPortador, [idStandInsertado, id_portador], (errPortador) => {
-          if (errPortador) {
-            console.error("Error al vincular portador:", errPortador);
-          }
-          res.json({
-            mensaje: "Stand y Portador insertados correctamente",
-            datos: { id: idStandInsertado, nombre, id_portador }
-          });
-        });
-      } else {
-        res.json({
-          mensaje: "Stand insertado correctamente",
-          datos: { id: idStandInsertado, nombre }
-        });
-      }
+  pool_mysql.query(sql, [id_evolucion, nombre, descripcion, aparicion, imagen_manga, imagen_anime, poder, velocidad, alcance, durabilidad, precis, potencial, referencia_musical], (error, resultados) => {
+    if (error) {
+      console.error("Error en INSERT:", error);
+      return res.status(500).json({ error });
     }
+
+    const idStandInsertado = resultados.insertId;
+
+    if (id_portador) {
+      const sqlPortador = "INSERT INTO stand_portador (id_stand, id_portador) VALUES (?, ?)";
+      pool_mysql.query(sqlPortador, [idStandInsertado, id_portador], (errPortador) => {
+        if (errPortador) {
+          console.error("Error al vincular portador:", errPortador);
+        }
+        res.json({
+          mensaje: "Stand y Portador insertados correctamente",
+          datos: { id: idStandInsertado, nombre, id_portador }
+        });
+      });
+    } else {
+      res.json({
+        mensaje: "Stand insertado correctamente",
+        datos: { id: idStandInsertado, nombre }
+      });
+    }
+  }
   );
 });
 

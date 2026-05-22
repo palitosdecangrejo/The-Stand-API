@@ -30,7 +30,7 @@
     <main>
         <div class="principal">
             <h2 class="page-title">Insertar Nuevo Stand</h2>
-            
+
             <div class="form-container">
                 <form id="form-insertar-stand">
                     <div class="form-group">
@@ -40,7 +40,10 @@
 
                     <div class="form-group form-group-relativo">
                         <label for="buscar-portador">Portador (Buscar y Seleccionar)</label>
+
+                        <!-- el autocomplete es necesario, si no empieza a sugerir cosas y se overlapea con el buscador nuestro -->
                         <input type="text" id="buscar-portador" placeholder="Ej: Jotaro Kujo" autocomplete="off">
+
                         <div id="resultados-portador" class="resultados-flotantes-portador oculto"></div>
                         <p id="portador-seleccionado" class="texto-portador-seleccionado"></p>
                         <input type="hidden" id="id_portador" name="id_portador">
@@ -73,7 +76,8 @@
 
                     <div class="form-group">
                         <label for="referencia_musical">Referencia Musical (Opcional, Canción + Artista)</label>
-                        <input type="text" id="referencia_musical" name="referencia_musical" placeholder="Ej: Shine On You Crazy Diamond Pink Floyd">
+                        <input type="text" id="referencia_musical" name="referencia_musical"
+                            placeholder="Ej: Seek And Destroy">
                     </div>
 
                     <h3 class="titulo-estadisticas">Estadísticas (Ej: A, B, C, None)</h3>
@@ -108,7 +112,7 @@
                     <div id="mensaje-resultado"></div>
                 </form>
             </div>
-            
+
         </div>
     </main>
     <footer>
