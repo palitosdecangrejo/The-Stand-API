@@ -9,6 +9,9 @@ body {
     background-color: #2b0e3b;
     color: white;
     padding: 20px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100dvh;
 }
 
 /* HEADER / BIENVENIDA */
@@ -79,6 +82,7 @@ main {
     display: flex;
     gap: 20px;
     min-height: 500px;
+    flex: 1;
 }
 
 /* LATERALES */

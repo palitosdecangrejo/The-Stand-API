@@ -1,4 +1,4 @@
-MEJORAS REALIZADAS EN EL PROYECTO (Parte Optativa)
+MEJORAS REALIZADAS EN EL PROYECTO
 
 1. Conexión a API externa (iTunes API): Se ha integrado la API de búsqueda de iTunes para buscar automáticamente la referencia musical de los stands que tengan, cargar la carátula del álbum y poner un reproductor de audio funcional con la canción.
 2. Inclusión de audio en la web: Se han añadido efectos de sonido interactivos. Por ejemplo, al solicitar un stand random, suena el efecto de una flecha clavándose, igual que en la serie.
