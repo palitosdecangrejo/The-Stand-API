@@ -1,0 +1,6 @@
+MEJORAS REALIZADAS EN EL PROYECTO (Parte Optativa)
+
+1. Conexión a API externa (iTunes API): Se ha integrado la API de búsqueda de iTunes para buscar automáticamente la referencia musical de los stands que tengan, cargar la carátula del álbum y poner un reproductor de audio funcional con la canción.
+2. Inclusión de audio en la web: Se han añadido efectos de sonido interactivos. Por ejemplo, al solicitar un stand random, suena el efecto de una flecha clavándose, igual que en la serie.
+3. Formularios: Además del formulario de inserción básico, se ha implementado un completo modo edición dinámico en el frontend que permite actualizar los atributos de los stands en tiempo real y conectarlo con el endpoint PUT.
+4. Animaciones CSS: Se ha creado animaciones para el stand en el lado y para la flecha de stand.

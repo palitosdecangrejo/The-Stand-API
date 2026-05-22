@@ -1,0 +1,6 @@
+Proyecto The Stand API
+Autores: Alonso Martín González & Héctor Guzmán Amor
+
+DESPLIEGUE:
+Importa la base de datos en el fichero "standapi.sql".
+Inicia el servidor ejecutando: node backend/server.js (se abrirá en http://localhost:3000).
