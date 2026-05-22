@@ -195,7 +195,7 @@ function cargarDetallesStand(id) {
             // evolucion
             const evolucion = document.createElement("p");
             evolucion.className = "desc";
-            evolucion.textContent = "evolución: ";
+            evolucion.textContent = "Evolución: ";
 
             if (stand.evolucion) {
                 let enlaceEvolucion = document.createElement("span");
@@ -288,6 +288,7 @@ function cargarDetallesStand(id) {
                             reproductor.src = cancion.previewUrl;
                             reproductor.volume = 0.075; // 7.5 de volumen pq suena muy alto, modificar luego si eso
                             reproductor.className = "reproductor-audio";
+                            reproductor.autoplay = true; // empieza a sonar solo
 
                             controlesMusica.appendChild(reproductor);
                             reproductorContenedor.appendChild(controlesMusica);
