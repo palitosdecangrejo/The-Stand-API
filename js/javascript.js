@@ -7,7 +7,7 @@ const ENDPOINT_ITUNES = "https://itunes.apple.com/search?limit=1&entity=musicTra
 // guardamos los stands por aqui pa filtrarlos luego si hace falta
 let todosLosStands = [];
 
-// funcion pa pillar todos los stands de la api de golpe (A)
+// funcion para pillar todos los stands de la api de golpe (A)
 function cargarStands() {
     fetch(ENDPOINT_STANDS)
         .then(res => res.json())
@@ -50,7 +50,7 @@ function mostrarStands(datos) {
         card.appendChild(img);
         card.appendChild(titulo);
 
-        // click pa ir a la pag de detalles
+        // click para ir a la pag de detalles
         card.addEventListener('click', () => {
             // miramos si estamos en la raiz o en /pages/
             const isRoot = !window.location.pathname.includes('/pages/');
@@ -74,7 +74,7 @@ function cargarDetallesStand(id) {
             const stand = datos.find(s => s.id == id);
 
             if (!stand) {
-                container.innerHTML = "<h2>stand no encontrao bro</h2>";
+                container.innerHTML = "<h2>Stand no encontrado.</h2>";
                 return;
             }
 
@@ -89,7 +89,7 @@ function cargarDetallesStand(id) {
 
             const img = document.createElement("img");
             img.src = stand.imagen_manga || stand.imagen_anime || "";
-            img.alt = stand.nombre || "img no disp";
+            img.alt = stand.nombre || "Imágen no disponible.";
 
             // botones pa alternar img entre manga y anime
             const divBotonesImg = document.createElement("div");
@@ -204,7 +204,7 @@ function cargarDetallesStand(id) {
                 enlaceEvolucion.className = "enlace-interactivo";
 
                 enlaceEvolucion.addEventListener("click", function () {
-                    // click y pillas los dtlls del stand evo
+                    // click para pillar los detalles del stand evo
                     cargarDetallesStand(stand.id_evolucion_real);
                 });
 
@@ -406,7 +406,6 @@ function cargarDetallesPortador(id) {
             layoutDiv.appendChild(imgWrapper);
             layoutDiv.appendChild(infoWrapper);
 
-            // lo añadimos to y au
             container.appendChild(layoutDiv);
         })
         .catch(error => {
@@ -433,73 +432,66 @@ function mostrarFormularioEdicion(stand, container, id) {
     const camposGrid = document.createElement('div');
     camposGrid.className = 'campos-grid-form';
 
-    // campos pa editar
-    camposGrid.innerHTML = `
-        <div class="form-group columna-completa">
-            <label>Descripción</label>
-            <textarea name="descripcion" rows="4">${stand.descripcion || ''}</textarea>
-        </div>
-        
-        <div class="form-group">
-            <label>Nombre</label>
-            <input type="text" name="nombre" value="${stand.nombre || ''}">
-        </div>
-        
-        <div class="form-group">
-            <label>Aparición</label>
-            <input type="text" name="aparicion" value="${stand.aparicion || ''}">
-        </div>
-        
-        <div class="form-group">
-            <label>URL imágen manga</label>
-            <input type="text" name="imagen_manga" value="${stand.imagen_manga || ''}">
-        </div>
-        
-        <div class="form-group">
-            <label>URL imágen anime</label>
-            <input type="text" name="imagen_anime" value="${stand.imagen_anime || ''}">
-        </div>
-        
-        <div class="form-group">
-            <label>Referencia musical</label>
-            <input type="text" name="referencia_musical" value="${stand.referencia_musical || ''}">
-        </div>
-        
-        <div class="form-group">
-            <label>ID Evolución</label>
-            <input type="number" name="id_evolucion" value="${stand.id_evolucion_real || ''}">
-        </div>
+    // campos para editar
+    const crearCampoForm = (etiqueta, tipo, nombre, valor) => {
+        const div = document.createElement('div');
+        div.className = 'form-group';
 
-        <div class="columna-completa">
-            <h3 class="titulo-estadisticas">Estadísticas</h3>
-            <div class="stats-grid-form">
-                <div class="form-group">
-                    <label>Poder</label>
-                    <input type="text" name="poder" value="${stand.poder || ''}">
-                </div>
-                <div class="form-group">
-                    <label>Velocidad</label>
-                    <input type="text" name="velocidad" value="${stand.velocidad || ''}">
-                </div>
-                <div class="form-group">
-                    <label>Alcance</label>
-                    <input type="text" name="alcance" value="${stand.alcance || ''}">
-                </div>
-                <div class="form-group">
-                    <label>Durabilidad</label>
-                    <input type="text" name="durabilidad" value="${stand.durabilidad || ''}">
-                </div>
-                <div class="form-group">
-                    <label>Precisión</label>
-                    <input type="text" name="precis" value="${stand.precis || ''}">
-                </div>
-                <div class="form-group">
-                    <label>Potencial</label>
-                    <input type="text" name="potencial" value="${stand.potencial || ''}">
-                </div>
-            </div>
-        </div>
-    `;
+        const label = document.createElement('label');
+        label.textContent = etiqueta;
+
+        const input = document.createElement('input');
+        input.type = tipo;
+        input.name = nombre;
+        input.value = valor || '';
+
+        div.appendChild(label);
+        div.appendChild(input);
+        return div;
+    };
+
+    // desc
+    const grupoDescripcion = document.createElement('div');
+    grupoDescripcion.className = 'form-group columna-completa';
+    const labelDesc = document.createElement('label');
+    labelDesc.textContent = 'Descripción';
+    const txtDesc = document.createElement('textarea');
+    txtDesc.name = 'descripcion';
+    txtDesc.rows = 4;
+    txtDesc.value = stand.descripcion || '';
+    grupoDescripcion.appendChild(labelDesc);
+    grupoDescripcion.appendChild(txtDesc);
+    camposGrid.appendChild(grupoDescripcion);
+
+    // campos principales
+    camposGrid.appendChild(crearCampoForm('Nombre', 'text', 'nombre', stand.nombre));
+    camposGrid.appendChild(crearCampoForm('Aparición', 'text', 'aparicion', stand.aparicion));
+    camposGrid.appendChild(crearCampoForm('URL imágen manga', 'text', 'imagen_manga', stand.imagen_manga));
+    camposGrid.appendChild(crearCampoForm('URL imágen anime', 'text', 'imagen_anime', stand.imagen_anime));
+    camposGrid.appendChild(crearCampoForm('Referencia musical', 'text', 'referencia_musical', stand.referencia_musical));
+    camposGrid.appendChild(crearCampoForm('ID Evolución', 'number', 'id_evolucion', stand.id_evolucion_real));
+
+    // stats
+    const divColumnaCompleta = document.createElement('div');
+    divColumnaCompleta.className = 'columna-completa';
+
+    const tituloStats = document.createElement('h3');
+    tituloStats.className = 'titulo-estadisticas';
+    tituloStats.textContent = 'Estadísticas';
+    divColumnaCompleta.appendChild(tituloStats);
+
+    const statsGridForm = document.createElement('div');
+    statsGridForm.className = 'stats-grid-form';
+
+    statsGridForm.appendChild(crearCampoForm('Poder', 'text', 'poder', stand.poder));
+    statsGridForm.appendChild(crearCampoForm('Velocidad', 'text', 'velocidad', stand.velocidad));
+    statsGridForm.appendChild(crearCampoForm('Alcance', 'text', 'alcance', stand.alcance));
+    statsGridForm.appendChild(crearCampoForm('Durabilidad', 'text', 'durabilidad', stand.durabilidad));
+    statsGridForm.appendChild(crearCampoForm('Precisión', 'text', 'precis', stand.precis));
+    statsGridForm.appendChild(crearCampoForm('Potencial', 'text', 'potencial', stand.potencial));
+
+    divColumnaCompleta.appendChild(statsGridForm);
+    camposGrid.appendChild(divColumnaCompleta);
 
     form.appendChild(camposGrid);
 
@@ -533,7 +525,7 @@ function mostrarFormularioEdicion(stand, container, id) {
         const formData = new FormData(form);
         const data = Object.fromEntries(formData.entries());
 
-        // si la evo ta vacia la pasamos a null
+        // si la evo esta vacia la pasamos a null
         if (!data.id_evolucion || data.id_evolucion.trim() === "") {
             data.id_evolucion = null;
         }
@@ -571,7 +563,7 @@ function activarBarraBusqueda() {
     const resultadosBusqueda = document.getElementById("resultados-busqueda");
 
     if (inputBusqueda) {
-        // busca cada vez q escribes
+        // busca cada vez que escribes
         inputBusqueda.addEventListener("input", function () {
             let texto = inputBusqueda.value.trim();
 
@@ -606,18 +598,18 @@ function buscarContenido(texto) {
             mostrarResultadosBusqueda(datos);
         })
         .catch(function (error) {
-            console.log("peto en la busqueda bro:", error);
+            console.log("Error en la búsqueda:", error);
         });
 }
 
-// ponemos lo q devuelve la busqueda (H)
+// ponemos lo que devuelve la busqueda (H)
 function mostrarResultadosBusqueda(resultados) {
     const resultadosBusqueda = document.getElementById("resultados-busqueda");
     if (!resultadosBusqueda) return;
 
     resultadosBusqueda.innerHTML = "";
 
-    // cortamos a 5 resultados pa q no pete visualmente
+    // cortamos a 5 resultados para que no pete visualmente
     let resultadosValidos = resultados.slice(0, 5);
 
     if (resultadosValidos.length) {
@@ -668,7 +660,7 @@ document.addEventListener("DOMContentLoaded", () => {
             boton.addEventListener("click", function () {
                 // quitamos la clase activo a los demas botones
                 botonesFiltro.forEach(b => b.classList.remove("activo"));
-                // y se la enchufamos al q acabamos de clicar
+                // y se la enchufamos al q acabamos de clickar
                 this.classList.add("activo");
 
                 const parte = this.getAttribute("data-parte");
@@ -729,7 +721,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     }
                 })
                 .catch(error => {
-                    console.log("peto al cargar stand random:", error);
+                    console.log("Error al cargar un stand random:", error);
                 });
         });
     }
@@ -772,13 +764,13 @@ document.addEventListener("DOMContentLoaded", () => {
                             resultadosPortador.appendChild(div);
                         });
                     })
-                    .catch(error => console.error("error buscando al portador bro:", error));
+                    .catch(error => console.error("Error buscando al portador:", error));
             } else {
                 resultadosPortador.classList.add("oculto");
             }
         });
 
-        // si clicas fuera, cerramos el menu ese
+        // si clicas fuera, cerramos el menu este
         document.addEventListener("click", function (e) {
             if (!inputBuscarPortador.contains(e.target) && !resultadosPortador.contains(e.target)) {
                 resultadosPortador.classList.add("oculto");
@@ -800,7 +792,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 data.id_evolucion = null;
             }
 
-            // si no puso portador, lo quitamos del obj pa q no pete
+            // si no puso portador, lo quitamos del obj para q no haya errores
             if (!data.id_portador || data.id_portador.trim() === "") {
                 delete data.id_portador;
             }
@@ -810,7 +802,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 data.referencia_musical = null;
             }
 
-            // metemos el stand a la db con un POST
+            // metemos el stand a la db con un post
             fetch(ENDPOINT_STANDS, {
                 method: "POST",
                 headers: {
@@ -820,7 +812,7 @@ document.addEventListener("DOMContentLoaded", () => {
             })
                 .then(response => {
                     if (!response.ok) {
-                        throw new Error("error fatal al insertar bro");
+                        throw new Error("Error al insertar");
                     }
                     return response.json();
                 })
@@ -840,7 +832,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     console.error("Error al meter el stand:", error);
                     const mensajeDiv = document.getElementById("mensaje-resultado");
                     mensajeDiv.className = "mensaje-error";
-                    mensajeDiv.textContent = "Error intentando meter el stand en la bd.";
+                    mensajeDiv.textContent = "Error intentando meter el stand en la BD.";
                 });
         });
     }
